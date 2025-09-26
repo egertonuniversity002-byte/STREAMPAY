@@ -1,6 +1,9 @@
 // ** MUI Imports
 import Grid from '@mui/material/Grid'
 import { useState, useEffect } from 'react'
+import Skeleton from '@mui/material/Skeleton'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
 
 // ** Icons Imports
 import Poll from 'mdi-material-ui/Poll'
@@ -77,8 +80,70 @@ const Dashboard = () => {
       <ProtectedRoute>
         <ApexChartWrapper>
           <Grid container spacing={6}>
+            <Grid item xs={12} md={4}>
+              <Card>
+                <CardContent>
+                  <Skeleton variant="rectangular" height={200} />
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} md={8}>
+              <Card>
+                <CardContent>
+                  <Skeleton variant="rectangular" height={300} />
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} md={6} lg={4}>
+              <Card>
+                <CardContent>
+                  <Skeleton variant="rectangular" height={250} />
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} md={6} lg={4}>
+              <Card>
+                <CardContent>
+                  <Skeleton variant="rectangular" height={250} />
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} md={6} lg={4}>
+              <Grid container spacing={6}>
+                {[1,2,3,4,5,6].map((i) => (
+                  <Grid item xs={6} key={i}>
+                    <CardStatisticsVerticalComponent
+                      stats={<Skeleton variant="text" width={60} />}
+                      icon={<Skeleton variant="circular" width={24} height={24} />}
+                      color='primary'
+                      trendNumber={<Skeleton variant="text" width={40} />}
+                      title={<Skeleton variant="text" width={80} />}
+                      subtitle={<Skeleton variant="text" width={60} />}
+                    />
+                  </Grid>
+                ))}
+              </Grid>
+            </Grid>
+            <Grid item xs={12} md={6} lg={4}>
+              <Card>
+                <CardContent>
+                  <Skeleton variant="rectangular" height={300} />
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} md={12} lg={8}>
+              <Card>
+                <CardContent>
+                  <Skeleton variant="rectangular" height={400} />
+                </CardContent>
+              </Card>
+            </Grid>
             <Grid item xs={12}>
-              <div>Loading dashboard...</div>
+              <Card>
+                <CardContent>
+                  <Skeleton variant="rectangular" height={300} />
+                </CardContent>
+              </Card>
             </Grid>
           </Grid>
         </ApexChartWrapper>

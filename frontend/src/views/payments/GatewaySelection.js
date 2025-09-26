@@ -15,14 +15,16 @@ import Chip from '@mui/material/Chip'
 import ArrowForward from 'mdi-material-ui/ArrowRight'
 import CircularProgress from '@mui/material/CircularProgress'
 
-// ** Gateway Icons and Logos (using text representations for now)
+// ** Gateway Icons and Logos (using actual images)
 const gatewayData = [
   {
     id: 'paypal',
     name: 'PayPal',
     description: 'Global payment platform',
-    logo: '🔵',
+    logo: '/images/logos/paypal.png',
     color: '#0070BA',
+    gradient: 'linear-gradient(135deg, #0070BA 0%, #00A3E0 100%)',
+    glowColor: 'rgba(0, 112, 186, 0.3)',
     supported: true,
     features: ['Global Cards', 'PayPal Balance', 'Instant Transfer']
   },
@@ -30,8 +32,10 @@ const gatewayData = [
     id: 'pesapal',
     name: 'Pesapal',
     description: 'East African payment gateway',
-    logo: '🟡',
+    logo: '/images/misc/paypal.png', // Using paypal logo as placeholder for pesapal
     color: '#FFD700',
+    gradient: 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
+    glowColor: 'rgba(255, 215, 0, 0.3)',
     supported: true,
     features: ['M-Pesa', 'Airtel Money', 'Card Payments']
   }
@@ -78,29 +82,60 @@ const GatewaySelection = ({ onGatewaySelect, user }) => {
                     sx={{
                       cursor: gateway.supported ? 'pointer' : 'not-allowed',
                       opacity: gateway.supported ? 1 : 0.6,
-                      border: selectedGateway === gateway.id ? '2px solid' : '1px solid',
-                      borderColor: selectedGateway === gateway.id ? 'primary.main' : 'divider',
-                      transition: 'all 0.2s ease-in-out',
+                      border: selectedGateway === gateway.id ? '3px solid' : '2px solid',
+                      borderColor: selectedGateway === gateway.id ? gateway.color : 'rgba(255,255,255,0.1)',
+                      background: selectedGateway === gateway.id
+                        ? `linear-gradient(135deg, ${gateway.color}10 0%, ${gateway.color}05 100%)`
+                        : 'transparent',
+                      transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                      position: 'relative',
+                      overflow: 'hidden',
+                      '&::before': {
+                        content: '""',
+                        position: 'absolute',
+                        top: 0,
+                        left: '-100%',
+                        width: '100%',
+                        height: '100%',
+                        background: `linear-gradient(90deg, transparent, ${gateway.glowColor}, transparent)`,
+                        transition: 'left 0.5s',
+                      },
                       '&:hover': {
-                        transform: gateway.supported ? 'translateY(-4px)' : 'none',
-                        boxShadow: gateway.supported ? 3 : 1
+                        transform: gateway.supported ? 'translateY(-8px) scale(1.02)' : 'none',
+                        boxShadow: gateway.supported
+                          ? `0 20px 40px ${gateway.glowColor}, 0 0 0 1px ${gateway.color}40`
+                          : 1,
+                        '&::before': {
+                          left: '100%',
+                        }
+                      },
+                      '&:active': {
+                        transform: gateway.supported ? 'translateY(-4px) scale(0.98)' : 'none',
                       }
                     }}
                     onClick={() => handleGatewayClick(gateway)}
                   >
                     <CardContent sx={{ textAlign: 'center', py: 4 }}>
-                      <Avatar
+                      <Box
+                        component="img"
+                        src={gateway.logo}
+                        alt={`${gateway.name} logo`}
                         sx={{
-                          width: 60,
-                          height: 60,
-                          bgcolor: gateway.color,
+                          width: 80,
+                          height: 80,
                           mx: 'auto',
-                          mb: 2,
-                          fontSize: '2rem'
+                          mb: 3,
+                          borderRadius: '50%',
+                          background: gateway.gradient,
+                          padding: '12px',
+                          boxShadow: `0 0 20px ${gateway.glowColor}`,
+                          transition: 'all 0.3s ease',
+                          '&:hover': {
+                            transform: 'scale(1.1) rotate(5deg)',
+                            boxShadow: `0 0 30px ${gateway.glowColor}, 0 0 40px ${gateway.glowColor}`
+                          }
                         }}
-                      >
-                        {gateway.logo}
-                      </Avatar>
+                      />
 
                       <Typography variant='h6' sx={{ mb: 1 }}>
                         {gateway.name}
@@ -144,7 +179,21 @@ const GatewaySelection = ({ onGatewaySelect, user }) => {
                   endIcon={isProcessing ? <CircularProgress size={20} color="inherit" /> : <ArrowForward />}
                   onClick={handleProceed}
                   disabled={isProcessing}
-                  sx={{ px: 6, py: 1.5 }}
+                  sx={{
+                    px: 6,
+                    py: 1.5,
+                    background: `linear-gradient(135deg, ${gatewayData.find(g => g.id === selectedGateway)?.color} 0%, ${gatewayData.find(g => g.id === selectedGateway)?.color}dd 100%)`,
+                    boxShadow: `0 4px 15px ${gatewayData.find(g => g.id === selectedGateway)?.glowColor}`,
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      background: `linear-gradient(135deg, ${gatewayData.find(g => g.id === selectedGateway)?.color}dd 0%, ${gatewayData.find(g => g.id === selectedGateway)?.color} 100%)`,
+                      transform: 'translateY(-2px) scale(1.02)',
+                      boxShadow: `0 8px 25px ${gatewayData.find(g => g.id === selectedGateway)?.glowColor}, 0 0 0 1px ${gatewayData.find(g => g.id === selectedGateway)?.color}40`
+                    },
+                    '&:active': {
+                      transform: 'translateY(0) scale(0.98)',
+                    }
+                  }}
                 >
                   {isProcessing ? 'Processing...' : `Proceed with ${gatewayData.find(g => g.id === selectedGateway)?.name}`}
                 </Button>
