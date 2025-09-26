@@ -32,10 +32,17 @@ import PhoneAndroid from 'mdi-material-ui/Cellphone'
 import { useAuth } from 'src/contexts/AuthContext'
 
 const PesapalDeposit = ({ user, onBack }) => {
+  // ** Constants
+  const minDeposit = 10 // KES 10 minimum for Pesapal
+  const maxDeposit = 150000 // KES 150,000 maximum
+
   // ** State
   const [amount, setAmount] = useState('500')
-  const [email, setEmail] = useState(user?.email || '')
+  const [currency, setCurrency] = useState('KES')
   const [phone, setPhone] = useState(user?.phone || '')
+  const [firstName, setFirstName] = useState(user?.first_name || '')
+  const [lastName, setLastName] = useState(user?.last_name || '')
+  const [email, setEmail] = useState(user?.email || '')
   const [paymentMethod, setPaymentMethod] = useState('mobile_money')
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
@@ -75,7 +82,7 @@ const PesapalDeposit = ({ user, onBack }) => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    if (!amount || !email) {
+    if (!amount || !firstName || !lastName || !email || !phone) {
       setMessage('Please fill in all required fields')
       setMessageType('error')
       return
@@ -87,9 +94,6 @@ const PesapalDeposit = ({ user, onBack }) => {
       setMessageType('error')
       return
     }
-
-    const minDeposit = 10 // KES 10 minimum for Pesapal
-    const maxDeposit = 150000 // KES 150,000 maximum
 
     if (parseFloat(amount) < minDeposit) {
       setMessage(`Minimum deposit amount is KES ${minDeposit}`)
@@ -115,10 +119,11 @@ const PesapalDeposit = ({ user, onBack }) => {
         },
         body: JSON.stringify({
           amount: parseFloat(amount),
-          email: email,
+          currency: currency,
           phone: phone,
-          currency: 'KES',
-          payment_method: paymentMethod
+          first_name: firstName,
+          last_name: lastName,
+          email: email
         })
       })
 
@@ -200,12 +205,37 @@ const PesapalDeposit = ({ user, onBack }) => {
                     type='number'
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
-                    placeholder='500 KSH (Fixed Amount)'
+                    placeholder='Enter deposit amount'
                     InputProps={{
-                      startAdornment: <Typography sx={{ mr: 1 }}>KES</Typography>,
-                      readOnly: true
+                      startAdornment: <Typography sx={{ mr: 1 }}>KES</Typography>
                     }}
-                    helperText='Fixed Amount: 500 KSH'
+                    helperText={`Minimum KES 10, Maximum KES ${maxDeposit.toLocaleString()}`}
+                    disabled={loading}
+                    inputProps={{
+                      min: 10,
+                      step: 0.01
+                    }}
+                  />
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label='First Name'
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    placeholder='Enter your first name'
+                    disabled={loading}
+                  />
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label='Last Name'
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    placeholder='Enter your last name'
                     disabled={loading}
                   />
                 </Grid>
@@ -235,49 +265,12 @@ const PesapalDeposit = ({ user, onBack }) => {
                 </Grid>
 
                 <Grid item xs={12}>
-                  <FormControl component='fieldset'>
-                    <Typography variant='subtitle1' sx={{ mb: 2 }}>
-                      Payment Method
-                    </Typography>
-                    <RadioGroup
-                      value={paymentMethod}
-                      onChange={(e) => setPaymentMethod(e.target.value)}
-                    >
-                      <FormControlLabel
-                        value='mobile_money'
-                        control={<Radio />}
-                        label='M-Pesa'
-                        disabled={loading}
-                      />
-                      <FormControlLabel
-                        value='airtel_money'
-                        control={<Radio />}
-                        label='Airtel Money'
-                        disabled={loading}
-                      />
-                      <FormControlLabel
-                        value='card'
-                        control={<Radio />}
-                        label='Credit/Debit Card'
-                        disabled={loading}
-                      />
-                      <FormControlLabel
-                        value='bank_transfer'
-                        control={<Radio />}
-                        label='Bank Transfer'
-                        disabled={loading}
-                      />
-                    </RadioGroup>
-                  </FormControl>
-                </Grid>
-
-                <Grid item xs={12}>
                   <Button
                     type='submit'
                     variant='contained'
                     size='large'
                     fullWidth
-                    disabled={loading || !amount || !email}
+                    disabled={loading || !amount || !firstName || !lastName || !email || !phone}
                     startIcon={loading ? <CircularProgress size={20} /> : <PhoneAndroid />}
                     sx={{
                       bgcolor: '#FFD700',

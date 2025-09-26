@@ -18,15 +18,6 @@ import CircularProgress from '@mui/material/CircularProgress'
 // ** Gateway Icons and Logos (using text representations for now)
 const gatewayData = [
   {
-    id: 'paystack',
-    name: 'Paystack',
-    description: 'Popular Nigerian payment gateway',
-    logo: '🟢',
-    color: '#00C9A7',
-    supported: true,
-    features: ['M-Pesa', 'Card Payments', 'Bank Transfer']
-  },
-  {
     id: 'paypal',
     name: 'PayPal',
     description: 'Global payment platform',
@@ -36,24 +27,6 @@ const gatewayData = [
     features: ['Global Cards', 'PayPal Balance', 'Instant Transfer']
   },
   {
-    id: 'stripe',
-    name: 'Stripe',
-    description: 'Developer-friendly payment API',
-    logo: '🟣',
-    color: '#635BFF',
-    supported: true,
-    features: ['Credit Cards', 'Digital Wallets', 'Bank Transfers']
-  },
-  {
-    id: 'flutterwave',
-    name: 'Flutterwave',
-    description: 'African payment technology',
-    logo: '🟠',
-    color: '#F5A623',
-    supported: true,
-    features: ['Mobile Money', 'Card Payments', 'Bank Transfer']
-  },
-  {
     id: 'pesapal',
     name: 'Pesapal',
     description: 'East African payment gateway',
@@ -61,15 +34,6 @@ const gatewayData = [
     color: '#FFD700',
     supported: true,
     features: ['M-Pesa', 'Airtel Money', 'Card Payments']
-  },
-  {
-    id: 'square',
-    name: 'Square',
-    description: 'Business payment solutions',
-    logo: '⚪',
-    color: '#FFFFFF',
-    supported: false,
-    features: ['Point of Sale', 'Online Payments', 'Invoicing']
   }
 ]
 

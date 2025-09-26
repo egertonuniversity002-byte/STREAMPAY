@@ -45,9 +45,11 @@ const TaskList = ({ onStartTask }) => {
   const [showTaskDialog, setShowTaskDialog] = useState(false)
   const [taskStats, setTaskStats] = useState({
     totalCompleted: 0,
+    totalPending: 0,
     totalEarnings: 0,
     todayEarnings: 0
   })
+  const [currency, setCurrency] = useState('KES')
 
   useEffect(() => {
     fetchTasks()
@@ -96,8 +98,10 @@ const TaskList = ({ onStartTask }) => {
 
       if (response.ok) {
         const data = await response.json()
+        setCurrency(data.currency || 'KES')
         setTaskStats({
           totalCompleted: data.analytics?.tasks?.completed || 0,
+          totalPending: data.analytics?.tasks?.pending || 0,
           totalEarnings: data.analytics?.tasks?.total_earnings || 0,
           todayEarnings: 0 // This would need a separate endpoint for daily stats
         })
@@ -107,12 +111,13 @@ const TaskList = ({ onStartTask }) => {
     }
   }
 
-  const formatCurrency = (amount, currency = 'KES') => {
-    return new Intl.NumberFormat('en-KE', {
-      style: 'currency',
-      currency: currency
-    }).format(amount)
-  }
+const formatCurrency = (amount) => {
+  return new Intl.NumberFormat('en-KE', {
+    style: 'currency',
+    currency: currency
+  }).format(amount)
+}
+
 
   const getTaskTypeColor = (type) => {
     const colors = {
@@ -174,7 +179,7 @@ const TaskList = ({ onStartTask }) => {
     <Box>
       {/* Task Stats Cards */}
       <Grid container spacing={6} sx={{ mb: 6 }}>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={3}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center">
@@ -190,7 +195,23 @@ const TaskList = ({ onStartTask }) => {
           </Card>
         </Grid>
 
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={3}>
+          <Card>
+            <CardContent>
+              <Box display="flex" alignItems="center">
+                <ClipboardListOutline color="info" sx={{ mr: 1 }} />
+                <Typography variant="h6">
+                  {taskStats.totalPending}
+                </Typography>
+              </Box>
+              <Typography variant="body2" color="text.secondary">
+                Pending Tasks
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        <Grid item xs={12} md={3}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center">
@@ -206,7 +227,7 @@ const TaskList = ({ onStartTask }) => {
           </Card>
         </Grid>
 
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={3}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center">

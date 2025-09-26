@@ -128,7 +128,6 @@ const TransactionsTable = () => {
 
   const handleApproveWithdrawal = async (withdrawalId) => {
     try {
-      const token = localStorage.getItem('token')
       const response = await fetch('https://official-paypal.onrender.com/api/admin/approve-withdrawal', {
         method: 'POST',
         headers: {
@@ -151,14 +150,17 @@ const TransactionsTable = () => {
 
   const handleRejectWithdrawal = async (withdrawalId) => {
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch('https://official-paypal.onrender.com/api/admin/reject-withdrawal', {
+      const response = await fetch('https://official-paypal.onrender.com/api/admin/reject', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ transaction_id: withdrawalId })
+        body: JSON.stringify({
+          transaction_id: withdrawalId,
+          status: "rejected",
+          reason: "Admin rejected the withdrawal"
+        })
       })
 
       if (response.ok) {
@@ -174,7 +176,6 @@ const TransactionsTable = () => {
 
   const handleManualComplete = async (transactionId) => {
     try {
-      const token = localStorage.getItem('token')
       const response = await fetch('https://official-paypal.onrender.com/api/admin/manual-complete', {
         method: 'POST',
         headers: {
@@ -307,7 +308,7 @@ const TransactionsTable = () => {
                               size="small"
                               variant="contained"
                               color="success"
-                              onClick={() => handleApproveWithdrawal(transaction.id)}
+                              onClick={() => handleApproveWithdrawal(transaction.transaction_id)}
                             >
                               Approve
                             </Button>
@@ -315,7 +316,7 @@ const TransactionsTable = () => {
                               size="small"
                               variant="outlined"
                               color="error"
-                              onClick={() => handleRejectWithdrawal(transaction.id)}
+                              onClick={() => handleRejectWithdrawal(transaction.transaction_id)}
                             >
                               Reject
                             </Button>
@@ -326,7 +327,7 @@ const TransactionsTable = () => {
                             size="small"
                             variant="contained"
                             color="primary"
-                            onClick={() => handleManualComplete(transaction.id)}
+                            onClick={() => handleManualComplete(transaction.transaction_id)}
                           >
                             Manual Complete
                           </Button>

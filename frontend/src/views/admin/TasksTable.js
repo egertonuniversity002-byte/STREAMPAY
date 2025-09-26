@@ -124,7 +124,6 @@ const TasksTable = () => {
 
   const handleCreateTask = async () => {
     try {
-      const token = localStorage.getItem('token')
       const response = await fetch('https://official-paypal.onrender.com/api/admin/tasks', {
         method: 'POST',
         headers: {
@@ -156,7 +155,6 @@ const TasksTable = () => {
 
   const handleUpdateTaskStatus = async (taskId, status) => {
     try {
-      const token = localStorage.getItem('token')
       // Convert status to is_active boolean that backend expects
       const is_active = status === 'active'
       const response = await fetch(`https://official-paypal.onrender.com/api/admin/tasks/${taskId}/status`, {
@@ -294,7 +292,7 @@ const TasksTable = () => {
                     </TableCell>
                     <TableCell>
                       <Typography variant='body1' sx={{ fontWeight: 500 }}>
-                        ${task.reward}
+                        KSH {task.reward}
                       </Typography>
                     </TableCell>
                     <TableCell>
@@ -397,7 +395,7 @@ const TasksTable = () => {
           </FormControl>
           <TextField
             fullWidth
-            label="Reward ($)"
+            label="Reward (KSH)"
             type="number"
             value={newTask.reward}
             onChange={(e) => setNewTask({ ...newTask, reward: e.target.value })}

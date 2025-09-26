@@ -27,8 +27,12 @@ import RecentActivity from 'src/views/admin/RecentActivity'
 // ** Component Imports
 import ProtectedRoute from 'src/components/ProtectedRoute'
 
+// ** Context Imports
+import { useAuth } from 'src/contexts/AuthContext'
+
 const AdminDashboard = () => {
   const router = useRouter()
+  const { token } = useAuth()
   const [stats, setStats] = useState(null)
   const [loading, setLoading] = useState(true)
 
@@ -53,8 +57,9 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     const fetchAdminStats = async () => {
+      if (!token) return
+
       try {
-        const token = localStorage.getItem('token')
         const response = await fetch('https://official-paypal.onrender.com/api/admin/dashboard/stats', {
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -65,6 +70,9 @@ const AdminDashboard = () => {
         if (response.ok) {
           const data = await response.json()
           setStats(data.stats) // Extract the stats object from the response
+        } else if (response.status === 401) {
+          // Invalid token, redirect to login
+          router.push('/pages/login')
         } else {
           console.error('Failed to fetch admin stats')
         }
@@ -105,18 +113,34 @@ const AdminDashboard = () => {
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <AdminStatsCard
-              title="Total Revenue"
-              value={`$${stats?.total_deposits || 0}`}
+              title="Activated Users"
+              value={stats?.activated_users || 0}
+              icon={<AccountOutline />}
+              color="secondary"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <AdminStatsCard
+              title="Total Deposits"
+              value={`KSH ${stats?.total_deposits || 0}`}
               icon={<CurrencyUsd />}
               color="success"
             />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <AdminStatsCard
-              title="Pending Withdrawals"
-              value={stats?.pending_withdrawals || 0}
+              title="Total Withdrawals"
+              value={`KSH ${stats?.total_withdrawals || 0}`}
               icon={<Bank />}
               color="warning"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <AdminStatsCard
+              title="Pending Withdrawals"
+              value={stats?.pending_withdrawals || 0}
+              icon={<TrendingUp />}
+              color="error"
             />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>

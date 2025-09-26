@@ -1,11 +1,14 @@
 // ** MUI Imports
 import Grid from '@mui/material/Grid'
+import { useState, useEffect } from 'react'
 
 // ** Icons Imports
 import Poll from 'mdi-material-ui/Poll'
 import CurrencyUsd from 'mdi-material-ui/CurrencyUsd'
 import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
 import BriefcaseVariantOutline from 'mdi-material-ui/BriefcaseVariantOutline'
+import AccountGroup from 'mdi-material-ui/AccountGroup'
+import Tree from 'mdi-material-ui/Tree'
 
 // ** Custom Components Imports
 import CardStatisticsVerticalComponent from 'src/@core/components/card-statistics/card-stats-vertical'
@@ -25,7 +28,81 @@ import SalesByCountries from 'src/views/dashboard/SalesByCountries'
 // ** Component Imports
 import ProtectedRoute from 'src/components/ProtectedRoute'
 
+// ** Context Imports
+import { useAuth } from 'src/contexts/AuthContext'
+
 const Dashboard = () => {
+  const [dashboardData, setDashboardData] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  // ** Auth Context
+  const { token, isAuthenticated } = useAuth()
+
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        if (!isAuthenticated() || !token) {
+          setLoading(false)
+          return
+        }
+
+        const response = await fetch('https://official-paypal.onrender.com/api/dashboard/stats', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        })
+
+        if (response.ok) {
+          const data = await response.json()
+          setDashboardData(data)
+          setError(null)
+        } else {
+          setError('Failed to fetch dashboard data')
+        }
+      } catch (error) {
+        console.error('Error fetching dashboard data:', error)
+        setError('Network error while fetching dashboard data')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchDashboardData()
+  }, [token, isAuthenticated])
+
+  if (loading) {
+    return (
+      <ProtectedRoute>
+        <ApexChartWrapper>
+          <Grid container spacing={6}>
+            <Grid item xs={12}>
+              <div>Loading dashboard...</div>
+            </Grid>
+          </Grid>
+        </ApexChartWrapper>
+      </ProtectedRoute>
+    )
+  }
+
+  if (error) {
+    return (
+      <ProtectedRoute>
+        <ApexChartWrapper>
+          <Grid container spacing={6}>
+            <Grid item xs={12}>
+              <div>Error: {error}</div>
+            </Grid>
+          </Grid>
+        </ApexChartWrapper>
+      </ProtectedRoute>
+    )
+  }
+
+  const user = dashboardData?.user || {}
+  const analytics = dashboardData?.analytics || {}
+
   return (
     <ProtectedRoute>
       <ApexChartWrapper>
@@ -34,56 +111,74 @@ const Dashboard = () => {
             <Trophy />
           </Grid>
           <Grid item xs={12} md={8}>
-            <StatisticsCard />
+            <StatisticsCard data={dashboardData} />
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
-            <WeeklyOverview />
+            <WeeklyOverview data={dashboardData} />
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
-            <TotalEarning />
+            <TotalEarning data={dashboardData} />
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
             <Grid container spacing={6}>
               <Grid item xs={6}>
                 <CardStatisticsVerticalComponent
-                  stats='$25.6k'
+                  stats={`KES ${user.profit || 0}`}
                   icon={<Poll />}
                   color='success'
                   trendNumber='+42%'
                   title='Total Profit'
-                  subtitle='Weekly Profit'
+                  subtitle='earnings'
                 />
               </Grid>
               <Grid item xs={6}>
                 <CardStatisticsVerticalComponent
-                  stats='$78'
-                  title='Refunds'
+                  stats={`KES ${user.total_earned || 0}`}
+                  title='Total Earned'
                   trend='negative'
                   color='secondary'
                   trendNumber='-15%'
-                  subtitle='Past Month'
+                  subtitle='Work Hard'
                   icon={<CurrencyUsd />}
                 />
               </Grid>
               <Grid item xs={6}>
                 <CardStatisticsVerticalComponent
-                  stats='862'
+                  stats={user.referral_count || 0}
                   trend='negative'
                   trendNumber='-18%'
-                  title='New Project'
-                  subtitle='Yearly Project'
+                  title='Referrals'
+                  subtitle='Total Referrals'
+                  icon={<AccountGroup />}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <CardStatisticsVerticalComponent
+                  stats={analytics.tasks?.completed || 0}
+                  color='warning'
+                  trend='negative'
+                  trendNumber='-18%'
+                  subtitle='Completed Tasks'
+                  title='Tasks Done'
                   icon={<BriefcaseVariantOutline />}
                 />
               </Grid>
               <Grid item xs={6}>
                 <CardStatisticsVerticalComponent
-                  stats='15'
-                  color='warning'
-                  trend='negative'
-                  trendNumber='-18%'
-                  subtitle='Last Week'
-                  title='Sales Queries'
-                  icon={<HelpCircleOutline />}
+                  stats={user.left_leg_size || 0}
+                  color='primary'
+                  title='Left Leg'
+                  subtitle='Binary Tree'
+                  icon={<Tree />}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <CardStatisticsVerticalComponent
+                  stats={user.right_leg_size || 0}
+                  color='primary'
+                  title='Right Leg'
+                  subtitle='Binary Tree'
+                  icon={<Tree />}
                 />
               </Grid>
             </Grid>

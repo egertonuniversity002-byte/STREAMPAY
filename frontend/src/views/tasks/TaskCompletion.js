@@ -140,8 +140,8 @@ const TaskCompletion = () => {
     setSelectedTask(task)
     // Initialize completion data based on task type
     const initialData = {}
-    if (task.type === 'survey' && task.survey_questions) {
-      initialData.answers = new Array(task.survey_questions.length).fill('')
+    if (task.type === 'survey') {
+      initialData.answers = [-1] // One question, not answered yet
     }
     setCompletionData(initialData)
     setShowCompletionDialog(true)
@@ -685,10 +685,6 @@ const TaskCompletion = () => {
     switch (taskType) {
       case 'survey':
         const answers = data.answers || []
-        // Check if there are actually survey questions
-        if (!task.survey_questions || task.survey_questions.length === 0) {
-          return 'No survey questions available for this task'
-        }
         if (answers.length === 0) {
           return 'Please provide answers to all survey questions'
         }
@@ -756,7 +752,6 @@ const TaskCompletion = () => {
     setError(null)
 
     try {
-      const token = localStorage.getItem('token')
       const response = await fetch('https://official-paypal.onrender.com/api/tasks/complete', {
         method: 'POST',
         headers: {

@@ -34,7 +34,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 
 MONGO_URL = os.environ.get('MONGO_URL', 'mongodb://localhost:27017')
 JWT_SECRET = os.environ.get('JWT_SECRET', 'your-secret-key-here') # CHANGE THIS IN PRODUCTION!
-BASE_URL = os.environ.get('BASE_URL', 'https://exellentmimo.onrender.com') # Your frontend base URL
+BASE_URL = os.environ.get('BASE_URL', 'https://streampay-pdfq.onrender.com') # Your frontend base URL
 
 CURRENCY_API_URL = os.environ.get('CURRENCY_API_URL', 'https://v6.exchangerate-api.com/v6/4bd219ce733e3e56dfff3e5a/latest/USD')
 BASE_CURRENCY = 'USD'  # Base for the exchange rate API
@@ -52,7 +52,7 @@ MPESA_SECURITY_CREDENTIAL = os.environ.get('MPESA_SECURITY_CREDENTIAL', '')
 # PayPal environment variables
 PAYPAL_CLIENT_ID = os.environ.get('PAYPAL_CLIENT_ID', '')
 PAYPAL_CLIENT_SECRET = os.environ.get('PAYPAL_CLIENT_SECRET', '')
-PAYPAL_MODE = os.environ.get('PAYPAL_MODE', 'sandbox')  # or 'live'
+PAYPAL_MODE = os.environ.get('PAYPAL_MODE', 'live')  # or 'live'
 PAYPAL_CURRENCY = os.environ.get('PAYPAL_CURRENCY', 'USD') 
 
 # Pesapal environment variables
@@ -65,6 +65,7 @@ PAYSTACK_SECRET_KEY = os.environ.get('PAYSTACK_SECRET_KEY', 'sk_test_0e11b4ffbd6
 PAYSTACK_PUBLIC_KEY = os.environ.get('PAYSTACK_PUBLIC_KEY', 'pk_test_6641f25de958f6aef729daf79c9b0f66d453d7de')
 
 # Set Pesapal URLs based on environment
+# Set Pesapal URLs based on environment
 if PESAPAL_ENVIRONMENT == 'live':
     PESAPAL_BASE_URL = "https://pay.pesapal.com/v3"
 else:
@@ -72,11 +73,11 @@ else:
 
 PESAPAL_AUTH_URL = f"{PESAPAL_BASE_URL}/api/Auth/RequestToken"
 PESAPAL_ORDER_URL = f"{PESAPAL_BASE_URL}/api/Transactions/SubmitOrderRequest"
-PESAPAL_IPN_URL = f"{PESAPAL_BASE_URL}/api/Transactions/RegisterIPN"
-PESAPAL_IPN_LIST_URL = f"{PESAPAL_BASE_URL}/api/Transactions/GetRegisteredIPNs"
+PESAPAL_IPN_URL = f"{PESAPAL_BASE_URL}/api/URLSetup/RegisterIPN"
+PESAPAL_IPN_LIST_URL = f"{PESAPAL_BASE_URL}/api/URLSetup/GetRegisteredIPNs"
 PESAPAL_STATUS_URL = f"{PESAPAL_BASE_URL}/api/Transactions/GetTransactionStatus"
 
-BACKEND_URL = os.environ.get('BACKEND_URL', 'https://official-paypal.onrender.com')
+BACKEND_URL = os.environ.get("BACKEND_URL", "https://official-paypal.onrender.com")
 
 
 
@@ -1264,99 +1265,6 @@ async def get_dashboard_stats(current_user: dict = Depends(get_current_user)):
             detail=f"Failed to load dashboard: {str(e)}"
         )
 
-@app.get("/api/dashboard/start")
-async def get_dashboard_start(current_user: dict = Depends(get_current_user)):
-    """
-    Get basic dashboard start data for quick overview.
-    Returns essential stats, recent activity, and quick actions.
-    """
-    try:
-        user_id = current_user['user_id']
-        preferred = current_user['preferred_currency']
-
-        # Get exchange rate for currency conversion
-        if preferred == "KES":
-            rate = 1.0
-        else:
-            try:
-                rate = await get_exchange_rate("KES", preferred)
-            except Exception as e:
-                logging.warning(f"Failed to fetch exchange rate for {preferred}: {e}. Using 1.0")
-                rate = 1.0
-
-        def convert_amount(amount: float) -> float:
-            return round(amount * rate, 2)
-
-        # Get recent transactions (last 5)
-        recent_transactions = await db.transactions.find(
-            {"user_id": user_id}
-        ).sort("created_at", -1).limit(5).to_list(5)
-
-        # Get recent notifications (last 3)
-        recent_notifications = await db.notifications.find(
-            {"$or": [
-                {"user_id": user_id},
-                {"user_id": None}
-            ]}
-        ).sort("created_at", -1).limit(3).to_list(3)
-
-        # Get basic stats
-        total_earned = float(current_user.get('total_earned', 0.0))
-        total_withdrawn = float(current_user.get('total_withdrawn', 0.0))
-        wallet_balance = float(current_user.get('wallet_balance', 0.0))
-        referral_count = current_user.get('referral_count', 0)
-        left_leg_size = current_user.get('left_leg_size', 0)
-        right_leg_size = current_user.get('right_leg_size', 0)
-
-        # Calculate profit
-        activation_expense = float(current_user.get('activation_expense', 0.0))
-        profit = total_earned - activation_expense
-
-        # Get task completion count
-        completed_tasks = await db.task_completions.count_documents(
-            {"user_id": user_id, "status": "completed"}
-        )
-
-        # Get pending withdrawals count
-        pending_withdrawals = await db.transactions.count_documents(
-            {"user_id": user_id, "type": "withdrawal", "status": "pending_admin_approval"}
-        )
-
-        return {
-            "success": True,
-            "currency": preferred,
-            "user": {
-                "full_name": current_user['full_name'],
-                "wallet_balance": convert_amount(wallet_balance),
-                "total_earned": convert_amount(total_earned),
-                "total_withdrawn": convert_amount(total_withdrawn),
-                "profit": convert_amount(profit),
-                "is_activated": current_user['is_activated'],
-                "referral_count": referral_count,
-                "left_leg_size": left_leg_size,
-                "right_leg_size": right_leg_size,
-                "completed_tasks": completed_tasks,
-                "pending_withdrawals": pending_withdrawals
-            },
-            "recent_activity": {
-                "transactions": json_serializable_doc(recent_transactions),
-                "notifications": json_serializable_doc(recent_notifications)
-            },
-            "quick_stats": {
-                "today_earnings": convert_amount(0.0),  # This would need more complex calculation
-                "this_week_earnings": convert_amount(0.0),  # This would need more complex calculation
-                "monthly_target": convert_amount(1000.0),  # Example target
-                "target_progress": min(convert_amount(total_earned) / 1000.0 * 100, 100)
-            }
-        }
-
-    except Exception as e:
-        logging.error(f"Failed to load dashboard start for user {user_id}: {str(e)}", exc_info=True)
-        raise HTTPException(
-            status_code=500,
-            detail=f"Failed to load dashboard start: {str(e)}"
-        )
-
 @app.get("/api/transactions/history")
 async def get_transaction_history(
     type_filter: str = Query("all", description="Filter by type: deposit, withdrawal, or all"),
@@ -1724,7 +1632,7 @@ async def initiate_paystack_deposit(
         paystack_payload = {
             "email": email,
             "amount": amount_kobo,
-            "callback_url": f"{BASE_URL}/dashboard?payment=paystack&status=completed",
+            "callback_url": f"{BASE_URL}/pages/success?payment=paystack&status=completed",
             "metadata": {
                 "user_id": current_user['user_id'],
                 "transaction_id": transaction_id
@@ -2567,20 +2475,20 @@ async def check_pesapal_status(
 async def handle_pesapal_ipn(request: Request):
     """
     Handle Pesapal IPN (Instant Payment Notification) callbacks.
+    Preserves all existing logic, only fixes parsing for JSON payloads.
     """
     try:
-        # Parse the notification (Pesapal sends XML)
-        body = await request.body()
-        logging.info(f"Pesapal IPN received: {body.decode()}")
+        # Parse the notification (Pesapal v3 sends JSON)
+        body = await request.json()
+        logging.info(f"Pesapal IPN received: {body}")
 
-        # Parse XML response
-        root = ET.fromstring(body.decode())
-        order_tracking_id = root.findtext("OrderTrackingId")
-        order_notification_type = root.findtext("OrderNotificationType")
-        order_merchant_reference = root.findtext("OrderMerchantReference")
-        
+        # Extract values (replacing XML extraction)
+        order_tracking_id = body.get("OrderTrackingId")
+        order_notification_type = body.get("OrderNotificationType")
+        order_merchant_reference = body.get("OrderMerchantReference")
+
         # For Pesapal, we need to confirm the notification
-        if order_notification_type == "CHANGE":
+        if order_notification_type in ["CHANGE","IPNCHANGE"]:
             # Get transaction details
             transaction = await db.transactions.find_one({
                 "payment_details.pesapal.order_tracking_id": order_tracking_id
@@ -2589,7 +2497,7 @@ async def handle_pesapal_ipn(request: Request):
             if transaction:
                 # Get Pesapal access token
                 access_token = await get_pesapal_access_token()
-                
+
                 if access_token:
                     # Confirm the status with Pesapal
                     headers = {
@@ -2598,9 +2506,7 @@ async def handle_pesapal_ipn(request: Request):
                         "Accept": "application/json"
                     }
 
-                    params = {
-                        "orderTrackingId": order_tracking_id
-                    }
+                    params = {"orderTrackingId": order_tracking_id}
 
                     async with httpx.AsyncClient() as client:
                         response = await client.get(
@@ -2611,8 +2517,15 @@ async def handle_pesapal_ipn(request: Request):
 
                         if response.status_code == 200:
                             status_data = response.json()
-                            payment_status = status_data.get("status", "").lower()
-                            
+                            logging.info(f"Pesapal status raw response: {status_data}")
+                            payment_status = (
+                                status_data.get("payment_status_description")
+                                or status_data.get("payment_status_code")
+                                or ""
+                            ).lower()
+                            logging.info(f"Parsed payment status: {payment_status}")
+
+
                             # Update transaction status
                             await db.transactions.update_one(
                                 {"payment_details.pesapal.order_tracking_id": order_tracking_id},
@@ -2620,7 +2533,7 @@ async def handle_pesapal_ipn(request: Request):
                                     "$set": {
                                         "status": payment_status,
                                         "updated_at": datetime.utcnow(),
-                                        "payment_details.pesapal.ipn_data": body.decode(),
+                                        "payment_details.pesapal.ipn_data": body,
                                         "payment_details.pesapal.status_response": status_data
                                     }
                                 }
@@ -2630,7 +2543,7 @@ async def handle_pesapal_ipn(request: Request):
                             if payment_status == "completed":
                                 user_id = transaction['user_id']
                                 amount_float = float(transaction['amount'])
-                                
+
                                 # Update user balance
                                 await db.users.update_one(
                                     {"user_id": user_id},
@@ -2642,12 +2555,11 @@ async def handle_pesapal_ipn(request: Request):
                                     }
                                 )
 
-                                # Check if this activates the user
+                                # Activation, binary commissions, referral, notifications, email
                                 user = await db.users.find_one({"user_id": user_id})
                                 if user and not user['is_activated'] and float(user['wallet_balance']) >= float(user['activation_amount']):
                                     activation_kes = float(user["activation_amount"])
                                     reward_kes = 30.0
-                                    net_balance = float(user["wallet_balance"]) - activation_kes + reward_kes
 
                                     await db.users.update_one(
                                         {"user_id": user_id},
@@ -2662,17 +2574,14 @@ async def handle_pesapal_ipn(request: Request):
                                     )
                                     logging.info(f"User {user_id} activated via Pesapal IPN. Expense: {activation_kes} KES, Reward: {reward_kes} KES")
 
-                                    # Trigger binary commissions
                                     await trigger_binary_commissions(user_id)
-                                    
-                                    # Process referral if exists
+
                                     if user.get("referred_by"):
                                         await process_referral_reward(
                                             referred_id=user["user_id"],
                                             referrer_id=user["referred_by"]
                                         )
 
-                                    # Notification and email
                                     await create_notification(
                                         {
                                             "title": "Account Activated!",
@@ -2695,7 +2604,7 @@ async def handle_pesapal_ipn(request: Request):
                                         """
                                     )
 
-                                # Create notification
+                                # Create notification for deposit
                                 await create_notification({
                                     "title": "Deposit Received",
                                     "message": f"KES {amount_float:,.2f} deposited to your account via Pesapal",
@@ -2708,7 +2617,7 @@ async def handle_pesapal_ipn(request: Request):
 
     except Exception as e:
         logging.error(f"Pesapal IPN processing error: {str(e)}", exc_info=True)
-        # Still return success to prevent Pesapal from retrying excessively
+        # Still return success to prevent Pesapal retries
         return JSONResponse(content={"status": "success"})
 
 @app.get("/api/payments/pesapal/callback")
@@ -2728,20 +2637,19 @@ async def handle_pesapal_callback(
 
         if not transaction:
             logging.warning(f"Transaction not found for order_tracking_id: {order_tracking_id}")
-            return RedirectResponse(url=f"{BASE_URL}/dashboard?payment=error")
+            return RedirectResponse(url=f"{BASE_URL}/pages/failure?payment=error")
 
         # Redirect user based on payment status
         if order_notification_type == "CHANGE":
             # Payment was successful
-            return RedirectResponse(url=f"{BASE_URL}/dashboard?payment=success&amount={transaction['amount']}")
+            return RedirectResponse(url=f"{BASE_URL}/pages/success?payment=success&amount={transaction['amount']}")
         else:
             # Payment failed or was cancelled
-            return RedirectResponse(url=f"{BASE_URL}/dashboard?payment=cancelled")
+            return RedirectResponse(url=f"{BASE_URL}/pages/failure?payment=cancelled")
 
     except Exception as e:
         logging.error(f"Pesapal callback error: {str(e)}", exc_info=True)
-        return RedirectResponse(url=f"{BASE_URL}/dashboard?payment=error")
-
+        return RedirectResponse(url=f"{BASE_URL}/pages/failure?payment=error")
 # ✅ Fixed Withdrawal Route (uses global_rates doc)
 @app.post("/api/payments/withdraw")
 async def request_withdrawal(
@@ -2856,6 +2764,427 @@ async def request_withdrawal(
         ),
         "transaction_id": transaction_doc["transaction_id"],
     }
+@app.post("/api/admin/approve-withdrawal", dependencies=[Depends(get_current_admin_user)])
+async def approve_withdrawal(approval_data: WithdrawalApproval, db_instance: AsyncIOMotorClient = Depends(get_db_instance)):
+    """
+    Admin approves a pending withdrawal request, deducts the amount,
+    and initiates the payout process (M-Pesa B2C or PayPal Payouts).
+    """
+    transaction_id = approval_data.transaction_id
+    session = await db_instance.client.start_session()
+    try:
+        async with session.start_transaction():
+            # Find and attempt to transition transaction from pending_admin_approval to processing
+            transaction = await db_instance.transactions.find_one_and_update(
+                {"transaction_id": transaction_id, "status": "pending_admin_approval"},
+                {"$set": {"status": "processing", "approved_at": datetime.utcnow()}}, 
+                return_document=True,
+                session=session
+            )
+
+            if not transaction:
+                logging.warning(f"Attempted to approve non-pending or non-existent transaction: {transaction_id}")
+                raise HTTPException(
+                    status_code=404,
+                    detail="Pending withdrawal request not found or already processed."
+                )
+
+            user_id = transaction['user_id']
+            amount = float(transaction['amount']) # Convert string to float for arithmetic
+
+            # Fetch user document to check current balance
+            user = await db_instance.users.find_one({"user_id": user_id}, session=session)
+            
+            if not user:
+                logging.error(f"User {user_id} not found for transaction {transaction_id}.")
+                raise HTTPException(status_code=404, detail="User associated with withdrawal not found.")
+
+            if float(user['wallet_balance']) < amount:
+                # If balance is insufficient now, means user spent money. Revert transaction status to failed.
+                await db_instance.transactions.update_one(
+                    {"_id": transaction["_id"]},
+                    {"$set": {"status": "failed", "completed_at": datetime.utcnow(), "error_message": "Insufficient balance at time of approval."}},
+                    session=session
+                )
+                await create_notification(
+                    {
+                        "title": "Withdrawal Failed",
+                        "message": f"Your withdrawal of KES {amount:,.2f} failed because your wallet balance was insufficient at the time of approval. Funds were not deducted.",
+                        "user_id": user_id,
+                        "type": "payment"
+                    },
+                    session=session,
+                    db_instance=db_instance 
+                )
+                # Commit the transaction here as this path is complete
+                await session.commit_transaction() 
+                raise HTTPException(
+                    status_code=400,
+                    detail="User's wallet balance is now insufficient. Withdrawal cancelled."
+                )
+            
+            # Deduct from user's balance first and increment total_withdrawn
+            current_balance = float(user['wallet_balance'])
+            new_balance = current_balance - amount
+            current_total_withdrawn = float(user['total_withdrawn'])
+            new_total_withdrawn = current_total_withdrawn + amount
+
+            await db_instance.users.update_one(
+                {"user_id": user_id},
+                {
+                    "$set": {
+                        "wallet_balance": str(new_balance), # Store as string
+                        "total_withdrawn": str(new_total_withdrawn) # Store as string
+                    }
+                },
+                session=session
+            )
+
+            # Now, initiate the actual payout based on method
+            payout_success = False
+            payout_message = "Payout initiated."
+            withdrawal_method = transaction['method'] # Get withdrawal method here
+
+            if withdrawal_method == "mpesa":
+                recipient_phone = transaction['recipient_phone']
+                try:
+                    access_token = await get_mpesa_access_token()
+                    
+                    b2c_payload = {
+                        "InitiatorName": MPESA_INITIATOR_NAME,
+                        "SecurityCredential": MPESA_SECURITY_CREDENTIAL, 
+                        "CommandID": "BusinessPayment", 
+                        "Amount": int(amount), # M-Pesa expects integer
+                        "PartyA": MPESA_B2C_SHORTCODE,
+                        "PartyB": recipient_phone,
+                        "Remarks": f"Withdrawal for {user['full_name']} (EarnPlatform)",
+                        "QueueTimeOutURL": f"{BACKEND_URL}/api/payments/mpesa-b2c-timeout",
+                        "ResultURL": f"{BACKEND_URL}/api/payments/mpesa-b2c-result",
+                        "Occasion": "User Withdrawal"
+                    }
+                    logging.info(f"M-Pesa B2C Payload: {json.dumps(b2c_payload, indent=2)}") # Log payload here
+
+                    async with httpx.AsyncClient(timeout=30.0) as client:
+                        mpesa_b2c_response = await client.post(
+                            MPESA_B2C_URL,
+                            json=b2c_payload,
+                            headers={
+                                "Authorization": f"Bearer {access_token}",
+                                "Content-Type": "application/json"
+                            }
+                        )
+                        mpesa_b2c_response.raise_for_status()
+                        b2c_data = mpesa_b2c_response.json()
+
+                        if b2c_data.get("ResponseCode") == "0":
+                            await db_instance.transactions.update_one(
+                                {"_id": transaction["_id"]},
+                                {"$set": {
+                                    "payment_details.mpesa_conversation_id": b2c_data.get("ConversationID"),
+                                    "payment_details.mpesa_originator_conv_id": b2c_data.get("OriginatorConversationID"),
+                                    "payment_details.raw_b2c_request": b2c_payload,
+                                    "payment_details.raw_b2c_response": b2c_data
+                                }},
+                                session=session
+                            )
+                            payout_success = True
+                            payout_message = "M-Pesa B2C initiated."
+                            logging.info(f"M-Pesa B2C initiated for transaction {transaction_id}. ConvID: {b2c_data.get('ConversationID')}")
+                        else:
+                            raise Exception(f"M-Pesa B2C initiation failed: {b2c_data.get('errorMessage', 'Unknown M-Pesa error')}")
+
+                except Exception as e:
+                    logging.error(f"Failed to initiate M-Pesa B2C for {transaction_id}: {str(e)}", exc_info=True)
+                    # Revert user balance if B2C initiation fails
+                    user = await db_instance.users.find_one({"user_id": user_id}, session=session)
+                    if user:
+                        current_wallet_balance = float(user.get('wallet_balance', '0.0'))
+                        new_wallet_balance = current_wallet_balance + amount
+                        current_total_withdrawn = float(user.get('total_withdrawn', '0.0'))
+                        new_total_withdrawn = current_total_withdrawn - amount
+
+                        await db_instance.users.update_one(
+                            {"user_id": user_id},
+                            {
+                                "$set": {
+                                    "wallet_balance": str(new_wallet_balance),
+                                    "total_withdrawn": str(new_total_withdrawn)
+                                }
+                            },
+                            session=session
+                        )
+                    await db_instance.transactions.update_one(
+                        {"_id": transaction["_id"]},
+                        {"$set": {"status": "failed", "completed_at": datetime.utcnow(), "error_message": f"M-Pesa B2C initiation failed: {e}"}},
+                        session=session
+                    )
+                    await create_notification(
+                        {
+                            "title": "Withdrawal Failed (M-Pesa)",
+                            "message": f"Your M-Pesa withdrawal of KES {amount:,.2f} failed during initiation. Funds returned to wallet. Reason: {e}",
+                            "user_id": user_id,
+                            "type": "payment"
+                        },
+                        session=session,
+                        db_instance=db_instance 
+                    )
+                    payout_success = False
+                    payout_message = f"M-Pesa B2C initiation failed. Funds reverted. {e}"
+
+            elif withdrawal_method == "paypal":
+                recipient_email = transaction['recipient_email']
+                converted_amount_usd_str = transaction['converted_amount'] # This is a string from DB
+                amount_usd = float(converted_amount_usd_str) # Convert to float for arithmetic
+                try:
+                    payout_response = await send_paypal_payout(transaction_id, recipient_email, amount_usd)
+                    if payout_response['success']:
+                         await db_instance.transactions.update_one(
+                            {"_id": transaction["_id"]},
+                            {"$set": {
+                                "payment_details.paypal_batch_id": payout_response['payout_batch_id'],
+                                "payment_details.payout_status_initial": payout_response['status'],
+                            }},
+                            session=session
+                        )
+                         payout_success = True
+                         payout_message = "PayPal payout initiated."
+                         logging.info(f"PayPal payout initiated for transaction {transaction_id}. Batch ID: {payout_response['payout_batch_id']}")
+                    else:
+                        raise Exception(f"PayPal payout initiation failed: {payout_response.get('status', 'Unknown error')}")
+
+                except Exception as e:
+                    logging.error(f"Failed to initiate PayPal payout for {transaction_id}: {str(e)}", exc_info=True)
+                    # Revert user balance if PayPal payout initiation fails
+                    user = await db_instance.users.find_one({"user_id": user_id}, session=session)
+                    if user:
+                        current_wallet_balance = float(user.get('wallet_balance', '0.0'))
+                        new_wallet_balance = current_wallet_balance + amount
+                        current_total_withdrawn = float(user.get('total_withdrawn', '0.0'))
+                        new_total_withdrawn = current_total_withdrawn - amount
+                        await db_instance.users.update_one(
+                            {"user_id": user_id},
+                            {
+                                "$set": {
+                                    "wallet_balance": str(new_wallet_balance),
+                                    "total_withdrawn": str(new_total_withdrawn)
+                                }
+                            },
+                            session=session
+                        )
+                    await db_instance.transactions.update_one(
+                        {"_id": transaction["_id"]},
+                        {"$set": {"status": "failed", "completed_at": datetime.utcnow(), "error_message": f"PayPal payout initiation failed: {e}"}},
+                        session=session
+                    )
+                    await create_notification(
+                        {
+                            "title": "Withdrawal Failed (PayPal)",
+                            "message": f"Your PayPal withdrawal of KES {amount:,.2f} failed during initiation. Funds returned to wallet. Reason: {e}",
+                            "user_id": user_id,
+                            "type": "payment"
+                        },
+                        session=session,
+                        db_instance=db_instance 
+                    )
+                    payout_success = False
+                    payout_message = f"PayPal payout initiation failed. Funds reverted. {e}"
+            else:
+                logging.error(f"Unknown withdrawal method for transaction {transaction_id}: {withdrawal_method}")
+                user = await db_instance.users.find_one({"user_id": user_id}, session=session)
+                if user:
+                    current_wallet_balance = float(user.get('wallet_balance', '0.0'))
+                    new_wallet_balance = current_wallet_balance + amount
+                    await db_instance.users.update_one(
+                        {"user_id": user_id},
+                        {"$set": {"wallet_balance": str(new_wallet_balance)}},
+                        session=session
+                    )
+                await db_instance.transactions.update_one(
+                    {"_id": transaction["_id"]},
+                    {"$set": {"status": "failed", "completed_at": datetime.utcnow(), "error_message": "Unknown withdrawal method."}},
+                    session=session
+                )
+                payout_success = False
+                payout_message = "Unknown withdrawal method. Funds reverted."
+            
+            if payout_success:
+                await create_notification({
+                    "title": "Withdrawal Approved!",
+                    "message": f"Your withdrawal of KES {amount:,.2f} has been approved and is being processed.",
+                    "user_id": user_id,
+                    "type": "payment"
+                }, session=session, db_instance=db_instance) 
+                await session.commit_transaction() # Commit successful transaction
+                return {
+                    "success": True,
+                    "message": f"Withdrawal {transaction_id} approved. {payout_message}"
+                }
+            else:
+                # If payout initiation failed, the error and notification are already handled above.
+                # We just need to ensure the transaction is aborted if it hasn't been already.
+                await session.abort_transaction() # Abort the session if payout_success is False and no prior abort/commit
+                raise HTTPException(status_code=500, detail=f"Withdrawal failed after approval: {payout_message}")
+
+    except HTTPException:
+        # If an HTTPException is raised, it's already handled, so just re-raise
+        # The transaction will be aborted by the outer `finally` or specific `except` blocks
+        raise
+    except Exception as e:
+        # Catch any other unexpected errors and abort the transaction
+        if session.in_transaction: # Only abort if a transaction is active
+            await session.abort_transaction()
+        logging.critical(f"Critical error during withdrawal approval for transaction {transaction_id}: {str(e)}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"An unexpected error occurred during withdrawal approval: {str(e)}"
+        )
+    finally:
+        # Ensure session is closed regardless of outcome
+        if session and session.in_transaction: # If transaction is still active (e.g., due to unhandled exception)
+             await session.abort_transaction() # Catch-all: abort if not committed/aborted
+        if session and session.client: # Ensure session is properly ended
+            session.end_session()
+@app.put("/api/admin/transactions/withdrawals/{transaction_id}/status", dependencies=[Depends(get_current_admin_user)])
+async def update_withdrawal_status_manual(transaction_id: str, update_data: UpdateWithdrawalStatus, db_instance: AsyncIOMotorClient = Depends(get_db_instance)):
+    """
+    Manual update of withdrawal status by admin (e.g., if automated B2C fails and needs manual intervention)
+    This endpoint is primarily for 'rej/ecting' or manually 'completing'/'failing' a withdrawal.
+    Approval should primarily use the /api/admin/approve-withdrawal endpoint which triggers payouts.
+    """
+    withdrawal = await db_instance.transactions.find_one({"transaction_id": transaction_id, "type": "withdrawal"})
+    if not withdrawal:
+        raise HTTPException(status_code=404, detail="Withdrawal request not found")
+    
+    # Prevent direct approval via this endpoint if it's meant to trigger payout
+    if update_data.status == 'approved' and withdrawal['status'] == 'pending_admin_approval':
+        raise HTTPException(status_code=400, detail="Use /api/admin/approve-withdrawal for approvals to trigger payouts.")
+
+    # Only allow status changes from specific states
+    allowed_status_transitions = {
+        "pending_admin_approval": ["rejected"], 
+        "processing": ["completed", "failed"], 
+        "failed": [],
+        "completed": [],
+        "rejected": [],
+        "timed_out": ["completed", "failed"]
+    }
+
+    if update_data.status not in allowed_status_transitions.get(withdrawal['status'], []):
+        raise HTTPException(status_code=400, detail=f"Invalid status transition from {withdrawal['status']} to {update_data.status}.")
+
+    update_fields = {"status": update_data.status, "updated_at": datetime.utcnow(), "admin_manual_override": True}
+    if update_data.reason:
+        update_fields["admin_reason"] = update_data.reason
+    
+    # Store previous status for conditional logic
+    previous_status = withdrawal['status']
+    
+    async with await mongo_client.start_session() as session:
+        try:
+            async with session.start_transaction():
+                await db_instance.transactions.update_one(
+                    {"_id": withdrawal["_id"]}, 
+                    {"$set": update_fields},
+                    session=session
+                )
+
+                user = await db_instance.users.find_one({"user_id": withdrawal['user_id']}, session=session)
+                if not user:
+                    logging.warning(f"User {withdrawal['user_id']} not found for withdrawal {transaction_id} during status update.")
+                    await session.commit_transaction()
+                    return {"success": True, "message": f"Withdrawal {transaction_id} status updated to {update_data.status}"}
+
+                amount = float(withdrawal['amount']) # Convert string to float for arithmetic
+
+                if update_data.status == 'rejected':
+                    if previous_status == 'processing': # Funds were already deducted
+                        current_wallet_balance = float(user.get('wallet_balance', '0.0'))
+                        new_wallet_balance = current_wallet_balance + amount
+                        await db_instance.users.update_one(
+                            {"user_id": user['user_id']},
+                            {"$set": {"wallet_balance": str(new_wallet_balance)}}, # Store as string
+                            session=session
+                        )
+                        # Revert total_withdrawn increment as payout failed/rejected
+                        current_total_withdrawn = float(user.get('total_withdrawn', '0.0'))
+                        new_total_withdrawn = current_total_withdrawn - amount
+                        await db_instance.users.update_one(
+                            {"user_id": user['user_id']},
+                            {"$set": {"total_withdrawn": str(new_total_withdrawn)}}, # Store as string
+                            session=session
+                        )
+                        logging.info(f"Funds KES {amount} reverted to user {user['user_id']} for rejected withdrawal {transaction_id}.")
+
+                    await create_notification(
+                        {
+                            "title": "Withdrawal Rejected",
+                            "message": f"Your withdrawal request of KES {amount:,.2f} was rejected. Reason: {update_data.reason or 'No reason provided.'}. Funds have been returned to your wallet if they were deducted.",
+                            "user_id": user['user_id'],
+                            "type": "alert"
+                        },
+                        session=session,
+                        db_instance=db_instance 
+                    )
+                
+                elif update_data.status == 'completed':
+                    if previous_status in ['processing', 'timed_out']: # Funds already deducted, ensure total_withdrawn is updated
+                        # If total_withdrawn was not incremented at 'approve-withdrawal', do it here
+                        # We incremented it at approve, so this part should not re-increment
+                        pass
+                    else:
+                        logging.warning(f"Manual completion for withdrawal {transaction_id} from {previous_status}. total_withdrawn not updated if it wasn't processing before.")
+
+                    await create_notification(
+                        {
+                            "title": "Withdrawal Completed!",
+                            "message": f"Your withdrawal of KES {amount:,.2f} has been successfully completed.",
+                            "user_id": user['user_id'],
+                            "type": "payment"
+                        },
+                        session=session,
+                        db_instance=db_instance 
+                    )
+                
+                elif update_data.status == 'failed':
+                    if previous_status in ['processing', 'timed_out']: # Funds were already deducted
+                        current_wallet_balance = float(user.get('wallet_balance', '0.0'))
+                        new_wallet_balance = current_wallet_balance + amount
+                        await db_instance.users.update_one(
+                            {"user_id": user['user_id']},
+                            {"$set": {"wallet_balance": str(new_wallet_balance)}}, # Store as string
+                            session=session
+                        )
+                         # Revert total_withdrawn increment as payout failed
+                        current_total_withdrawn = float(user.get('total_withdrawn', '0.0'))
+                        new_total_withdrawn = current_total_withdrawn - amount
+                        await db_instance.users.update_one(
+                            {"user_id": user['user_id']},
+                            {"$set": {"total_withdrawn": str(new_total_withdrawn)}}, # Store as string
+                            session=session
+                        )
+                        logging.info(f"Funds KES {amount} reverted to user {user['user_id']} for failed withdrawal {transaction_id}.")
+
+                    await create_notification(
+                        {
+                            "title": "Withdrawal Failed",
+                            "message": f"Your withdrawal of KES {amount:,.2f} failed. Reason: {update_data.reason or 'No reason provided.'}. Funds have been returned to your wallet.",
+                            "user_id": user['user_id'],
+                            "type": "payment"
+                        },
+                        session=session,
+                        db_instance=db_instance 
+                    )
+                
+                await session.commit_transaction()
+
+            return {"success": True, "message": f"Withdrawal {transaction_id} status updated to {update_data.status}"}
+        except Exception as e:
+            await session.abort_transaction()
+            logging.critical(f"Critical error updating withdrawal status manually for transaction {transaction_id}: {str(e)}", exc_info=True)
+            raise HTTPException(status_code=500, detail=str(e))
+
+    
+
 
 
 @app.get("/api/team/tree")
@@ -2984,8 +3313,8 @@ async def create_paypal_order_endpoint(
                 }
             }],
             "application_context": {
-                "return_url": f"{BASE_URL}/?paypal_return=success", 
-                "cancel_url": f"{BASE_URL}/?paypal_return=cancel",
+                "return_url": f"{BASE_URL}/pages/success/?paypal_return=success", 
+                "cancel_url": f"{BASE_URL}/pages/failure/?paypal_return=cancel",
                 "brand_name": "EarnPlatform",
                 "user_action": "PAY_NOW",
                 "shipping_preference": "NO_SHIPPING"
@@ -3502,135 +3831,110 @@ async def get_all_withdrawals(status: Optional[str] = None):
     return {"success": True, "withdrawals": json_serializable_doc(withdrawals)} 
 
 # Admin transaction management endpoints
-@app.post("/api/admin/manual-complete", dependencies=[Depends(get_current_admin_user)])
-async def manual_complete_transaction(approval_data: WithdrawalApproval, db_instance: AsyncIOMotorClient = Depends(get_db_instance)):
+from pydantic import BaseModel
+
+class ManualCompleteRequest(BaseModel):
+    transaction_id: str
+
+@router.post("/api/admin/manual-complete")
+async def manual_complete_transaction(
+    data: ManualCompleteRequest,
+    current_admin: dict = Depends(get_current_admin)
+):
     """
-    Admin manually completes a stuck transaction.
+    Admin manually marks withdrawal as 'completed'.
+    Deducts balance, increments withdrawn,
+    creates notification + always sends email.
     """
-    transaction_id = approval_data.transaction_id
-    session = await db_instance.client.start_session()
+    transaction_id = data.transaction_id
 
-    try:
-        async with session.start_transaction():
-            # Find the transaction
-            transaction = await db_instance.transactions.find_one(
-                {"transaction_id": transaction_id},
-                session=session
-            )
+    # --- Fetch Transaction ---
+    transaction = await db.transactions.find_one({"transaction_id": transaction_id})
+    if not transaction:
+        raise HTTPException(404, f"Transaction {transaction_id} not found")
+    if transaction["status"] != "pending_admin_approval":
+        raise HTTPException(400, "Transaction is not pending admin approval")
 
-            if not transaction:
-                raise HTTPException(status_code=404, detail="Transaction not found")
+    # --- Fetch User ---
+    user = await db.users.find_one({"user_id": transaction["user_id"]})
+    if not user:
+        raise HTTPException(404, f"User {transaction['user_id']} not found")
 
-            # Only allow manual completion for pending or failed transactions
-            if transaction['status'] not in ['pending', 'pending_admin_approval', 'failed']:
-                raise HTTPException(
-                    status_code=400,
-                    detail=f"Cannot manually complete transaction with status: {transaction['status']}"
-                )
+    # Amount (stored as string → float)
+    amount = float(transaction.get("kes_amount") or transaction.get("amount", 0.0))
+    current_balance = float(user.get("wallet_balance", "0.0"))
 
-            user_id = transaction['user_id']
-            amount = float(transaction['amount'])
-            transaction_type = transaction['type']
+    if current_balance < amount:
+        raise HTTPException(400, "Insufficient balance in user account")
 
-            # Update transaction status
-            await db_instance.transactions.update_one(
-                {"transaction_id": transaction_id},
-                {
-                    "$set": {
-                        "status": "completed",
-                        "completed_at": datetime.utcnow(),
-                        "manually_completed_by": "admin",
-                        "manual_completion_reason": "Admin manually completed stuck transaction"
-                    }
-                },
-                session=session
-            )
+    # --- Update User Wallet ---
+    new_balance = current_balance - amount
+    new_total_withdrawn = float(user.get("total_withdrawn", "0.0")) + amount
 
-            # Update user balance if it's a deposit
-            if transaction_type == "deposit":
-                user = await db_instance.users.find_one({"user_id": user_id}, session=session)
-                if user:
-                    current_wallet_balance = float(user.get('wallet_balance', '0.0'))
-                    new_wallet_balance = current_wallet_balance + amount
-                    current_total_earned = float(user.get('total_earned', '0.0'))
-                    new_total_earned = current_total_earned + amount
-
-                    await db_instance.users.update_one(
-                        {"user_id": user_id},
-                        {
-                            "$set": {
-                                "wallet_balance": str(new_wallet_balance),
-                                "total_earned": str(new_total_earned)
-                            }
-                        },
-                        session=session
-                    )
-
-                    # Check if this activates the user
-                    if not user['is_activated'] and new_wallet_balance >= float(user['activation_amount']):
-                        await db_instance.users.update_one(
-                            {"user_id": user_id},
-                            {"$set": {"is_activated": True}},
-                            session=session
-                        )
-                        logging.info(f"User {user_id} activated via manual completion.")
-
-                        # Trigger binary commissions
-                        await trigger_binary_commissions(user_id, session=session)
-
-                        # Process referral if exists
-                        if user.get("referred_by"):
-                            await process_referral_reward(
-                                referred_id=user_id,
-                                referrer_id=user["referred_by"],
-                                session=session
-                            )
-
-                        # Create activation notification
-                        await create_notification(
-                            {
-                                "title": "Account Activated!",
-                                "message": f"Congratulations! Your account is activated. Deposit of {amount} KES manually completed.",
-                                "user_id": user_id,
-                                "type": "reward"
-                            },
-                            session=session,
-                            db_instance=db_instance
-                        )
-
-                # Create notification for deposit completion
-                await create_notification(
-                    {
-                        "title": "Deposit Completed",
-                        "message": f"Your deposit of KES {amount:,.2f} has been manually completed by admin.",
-                        "user_id": user_id,
-                        "type": "payment"
-                    },
-                    session=session,
-                    db_instance=db_instance
-                )
-
-            await session.commit_transaction()
-            logging.info(f"Admin manually completed transaction {transaction_id} for user {user_id}")
-
-            return {
-                "success": True,
-                "message": f"Transaction {transaction_id} manually completed successfully"
+    await db.users.update_one(
+        {"user_id": user["user_id"]},
+        {
+            "$set": {
+                "wallet_balance": str(round(new_balance, 2)),
+                "total_withdrawn": str(round(new_total_withdrawn, 2)),
+                "updated_at": datetime.utcnow()
             }
+        }
+    )
 
-    except HTTPException:
-        raise
-    except Exception as e:
-        if session.in_transaction:
-            await session.abort_transaction()
-        logging.error(f"Error in manual completion for transaction {transaction_id}: {str(e)}", exc_info=True)
-        raise HTTPException(
-            status_code=500,
-            detail=f"Failed to manually complete transaction: {str(e)}"
+    # --- Update Transaction ---
+    await db.transactions.update_one(
+        {"transaction_id": transaction_id},
+        {
+            "$set": {
+                "status": "completed",
+                "completed_at": datetime.utcnow(),
+                "admin_completed_by": current_admin["admin_id"]
+            }
+        }
+    )
+
+    # --- Create Notification ---
+    notification_doc = {
+        "user_id": user["user_id"],
+        "title": "Withdrawal Completed",
+        "message": (
+            f"Your withdrawal of {transaction['original_amount']} {transaction['original_currency']} "
+            f"(KES {amount:.2f}) has been successfully processed."
+        ),
+        "created_at": datetime.utcnow(),
+        "is_read": False
+    }
+    await db.notifications.insert_one(notification_doc)
+
+    # --- Always Send Email ---
+    if user.get("email"):
+        email_message = MessageSchema(
+            subject="Withdrawal Completed",
+            recipients=[user["email"]],
+            body=f"""
+            Hi {user.get('full_name', 'User')},
+
+            ✅ Your withdrawal of {transaction['original_amount']} {transaction['original_currency']}
+            (KES {amount:.2f}) has been completed successfully.
+
+            New Wallet Balance: {new_balance:.2f} KES
+
+            Thank you for using our platform.
+            """,
+            subtype="plain"
         )
-    finally:
-        if session and session.client:
-            session.end_session()
+        fm = FastMail(conf)
+        await fm.send_message(email_message)
+
+    logging.info(f"✅ Withdrawal {transaction_id} completed by {current_admin['admin_id']}")
+
+    return {
+        "success": True,
+        "message": f"Withdrawal {transaction_id} marked as completed.",
+        "deducted": amount,
+        "new_balance": new_balance
+    }
 
 @app.post("/api/admin/approve", dependencies=[Depends(get_current_admin_user)])
 async def approve_transaction(approval_data: WithdrawalApproval, db_instance: AsyncIOMotorClient = Depends(get_db_instance)):
