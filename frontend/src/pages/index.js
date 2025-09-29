@@ -196,15 +196,15 @@ const Dashboard = () => {
                   subtitle='earnings'
                   sx={{
                     background: theme => theme.palette.mode === 'dark'
-                      ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
-                      : 'linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 50%, #fff3e0 100%)',
-                    borderRadius: '16px',
+                      ? 'linear-gradient(135deg, #4caf50 0%, #66bb6a 50%, #4caf50 100%)'
+                      : 'linear-gradient(135deg, #4caf50 0%, #66bb6a 50%, #4caf50 100%)',
+                    borderRadius: '20px',
                     boxShadow: theme => theme.palette.mode === 'dark'
-                      ? '0 15px 35px rgba(0, 123, 255, 0.3), 0 0 15px rgba(255, 215, 0, 0.1)'
-                      : '0 15px 35px rgba(0, 123, 255, 0.2), 0 0 15px rgba(255, 215, 0, 0.1)',
-                    border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,215,0,0.3)' : '1px solid rgba(0,123,255,0.2)',
+                      ? '0 20px 40px rgba(76, 175, 80, 0.3), 0 0 20px rgba(76, 175, 80, 0.1)'
+                      : '0 20px 40px rgba(76, 175, 80, 0.2), 0 0 20px rgba(76, 175, 80, 0.1)',
+                    border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(76,175,80,0.3)' : '1px solid rgba(76,175,80,0.2)',
                     transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                    animation: 'fadeInUp 0.6s ease-out',
+                    animation: 'fadeInUp 0.6s ease-out, pulse 2s infinite',
                     position: 'relative',
                     overflow: 'hidden',
                     '&::before': {
@@ -214,14 +214,14 @@ const Dashboard = () => {
                       left: '-100%',
                       width: '100%',
                       height: '100%',
-                      background: 'linear-gradient(90deg, transparent, rgba(255,215,0,0.3), transparent)',
+                      background: 'linear-gradient(90deg, transparent, rgba(76,175,80,0.3), transparent)',
                       transition: 'left 0.5s',
                     },
                     '&:hover': {
-                      transform: 'translateY(-6px) scale(1.02)',
+                      transform: 'translateY(-8px) scale(1.02)',
                       boxShadow: theme => theme.palette.mode === 'dark'
-                        ? '0 25px 50px rgba(0, 123, 255, 0.4), 0 0 25px rgba(255, 215, 0, 0.2)'
-                        : '0 25px 50px rgba(0, 123, 255, 0.3), 0 0 25px rgba(255, 215, 0, 0.15)',
+                        ? '0 30px 60px rgba(76, 175, 80, 0.4), 0 0 30px rgba(76, 175, 80, 0.2)'
+                        : '0 30px 60px rgba(76, 175, 80, 0.3), 0 0 30px rgba(76, 175, 80, 0.15)',
                       '&::before': {
                         left: '100%',
                       }
@@ -235,6 +235,11 @@ const Dashboard = () => {
                         opacity: 1,
                         transform: 'translateY(0)',
                       },
+                    },
+                    '@keyframes pulse': {
+                      '0%': { transform: 'scale(1)', boxShadow: '0 20px 40px rgba(76, 175, 80, 0.3)' },
+                      '50%': { transform: 'scale(1.05)', boxShadow: '0 25px 50px rgba(76, 175, 80, 0.5)' },
+                      '100%': { transform: 'scale(1)', boxShadow: '0 20px 40px rgba(76, 175, 80, 0.3)' },
                     },
                   }}
                 />
@@ -252,10 +257,10 @@ const Dashboard = () => {
                     background: theme => theme.palette.mode === 'dark'
                       ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
                       : 'linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 50%, #fff3e0 100%)',
-                    borderRadius: '16px',
+                    borderRadius: '20px',
                     boxShadow: theme => theme.palette.mode === 'dark'
-                      ? '0 15px 35px rgba(0, 123, 255, 0.3), 0 0 15px rgba(255, 215, 0, 0.1)'
-                      : '0 15px 35px rgba(0, 123, 255, 0.2), 0 0 15px rgba(255, 215, 0, 0.1)',
+                      ? '0 20px 40px rgba(0, 123, 255, 0.3), 0 0 20px rgba(255, 215, 0, 0.1)'
+                      : '0 20px 40px rgba(0, 123, 255, 0.2), 0 0 20px rgba(255, 215, 0, 0.1)',
                     border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,215,0,0.3)' : '1px solid rgba(0,123,255,0.2)',
                     transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                     animation: 'fadeInUp 0.6s ease-out',
@@ -272,10 +277,10 @@ const Dashboard = () => {
                       transition: 'left 0.5s',
                     },
                     '&:hover': {
-                      transform: 'translateY(-6px) scale(1.02)',
+                      transform: 'translateY(-8px) scale(1.02)',
                       boxShadow: theme => theme.palette.mode === 'dark'
-                        ? '0 25px 50px rgba(0, 123, 255, 0.4), 0 0 25px rgba(255, 215, 0, 0.2)'
-                        : '0 25px 50px rgba(0, 123, 255, 0.3), 0 0 25px rgba(255, 215, 0, 0.15)',
+                        ? '0 30px 60px rgba(0, 123, 255, 0.4), 0 0 30px rgba(255, 215, 0, 0.2)'
+                        : '0 30px 60px rgba(0, 123, 255, 0.3), 0 0 30px rgba(255, 215, 0, 0.15)',
                       '&::before': {
                         left: '100%',
                       }
@@ -305,10 +310,10 @@ const Dashboard = () => {
                     background: theme => theme.palette.mode === 'dark'
                       ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
                       : 'linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 50%, #fff3e0 100%)',
-                    borderRadius: '16px',
+                    borderRadius: '20px',
                     boxShadow: theme => theme.palette.mode === 'dark'
-                      ? '0 15px 35px rgba(0, 123, 255, 0.3), 0 0 15px rgba(255, 215, 0, 0.1)'
-                      : '0 15px 35px rgba(0, 123, 255, 0.2), 0 0 15px rgba(255, 215, 0, 0.1)',
+                      ? '0 20px 40px rgba(0, 123, 255, 0.3), 0 0 20px rgba(255, 215, 0, 0.1)'
+                      : '0 20px 40px rgba(0, 123, 255, 0.2), 0 0 20px rgba(255, 215, 0, 0.1)',
                     border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,215,0,0.3)' : '1px solid rgba(0,123,255,0.2)',
                     transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                     animation: 'fadeInUp 0.6s ease-out',
@@ -325,10 +330,10 @@ const Dashboard = () => {
                       transition: 'left 0.5s',
                     },
                     '&:hover': {
-                      transform: 'translateY(-6px) scale(1.02)',
+                      transform: 'translateY(-8px) scale(1.02)',
                       boxShadow: theme => theme.palette.mode === 'dark'
-                        ? '0 25px 50px rgba(0, 123, 255, 0.4), 0 0 25px rgba(255, 215, 0, 0.2)'
-                        : '0 25px 50px rgba(0, 123, 255, 0.3), 0 0 25px rgba(255, 215, 0, 0.15)',
+                        ? '0 30px 60px rgba(0, 123, 255, 0.4), 0 0 30px rgba(255, 215, 0, 0.2)'
+                        : '0 30px 60px rgba(0, 123, 255, 0.3), 0 0 30px rgba(255, 215, 0, 0.15)',
                       '&::before': {
                         left: '100%',
                       }
@@ -359,10 +364,10 @@ const Dashboard = () => {
                     background: theme => theme.palette.mode === 'dark'
                       ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
                       : 'linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 50%, #fff3e0 100%)',
-                    borderRadius: '16px',
+                    borderRadius: '20px',
                     boxShadow: theme => theme.palette.mode === 'dark'
-                      ? '0 15px 35px rgba(0, 123, 255, 0.3), 0 0 15px rgba(255, 215, 0, 0.1)'
-                      : '0 15px 35px rgba(0, 123, 255, 0.2), 0 0 15px rgba(255, 215, 0, 0.1)',
+                      ? '0 20px 40px rgba(0, 123, 255, 0.3), 0 0 20px rgba(255, 215, 0, 0.1)'
+                      : '0 20px 40px rgba(0, 123, 255, 0.2), 0 0 20px rgba(255, 215, 0, 0.1)',
                     border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,215,0,0.3)' : '1px solid rgba(0,123,255,0.2)',
                     transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                     animation: 'fadeInUp 0.6s ease-out',
@@ -379,10 +384,10 @@ const Dashboard = () => {
                       transition: 'left 0.5s',
                     },
                     '&:hover': {
-                      transform: 'translateY(-6px) scale(1.02)',
+                      transform: 'translateY(-8px) scale(1.02)',
                       boxShadow: theme => theme.palette.mode === 'dark'
-                        ? '0 25px 50px rgba(0, 123, 255, 0.4), 0 0 25px rgba(255, 215, 0, 0.2)'
-                        : '0 25px 50px rgba(0, 123, 255, 0.3), 0 0 25px rgba(255, 215, 0, 0.15)',
+                        ? '0 30px 60px rgba(0, 123, 255, 0.4), 0 0 30px rgba(255, 215, 0, 0.2)'
+                        : '0 30px 60px rgba(0, 123, 255, 0.3), 0 0 30px rgba(255, 215, 0, 0.15)',
                       '&::before': {
                         left: '100%',
                       }
@@ -411,10 +416,10 @@ const Dashboard = () => {
                     background: theme => theme.palette.mode === 'dark'
                       ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
                       : 'linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 50%, #fff3e0 100%)',
-                    borderRadius: '16px',
+                    borderRadius: '20px',
                     boxShadow: theme => theme.palette.mode === 'dark'
-                      ? '0 15px 35px rgba(0, 123, 255, 0.3), 0 0 15px rgba(255, 215, 0, 0.1)'
-                      : '0 15px 35px rgba(0, 123, 255, 0.2), 0 0 15px rgba(255, 215, 0, 0.1)',
+                      ? '0 20px 40px rgba(0, 123, 255, 0.3), 0 0 20px rgba(255, 215, 0, 0.1)'
+                      : '0 20px 40px rgba(0, 123, 255, 0.2), 0 0 20px rgba(255, 215, 0, 0.1)',
                     border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,215,0,0.3)' : '1px solid rgba(0,123,255,0.2)',
                     transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                     animation: 'fadeInUp 0.6s ease-out',
@@ -431,10 +436,10 @@ const Dashboard = () => {
                       transition: 'left 0.5s',
                     },
                     '&:hover': {
-                      transform: 'translateY(-6px) scale(1.02)',
+                      transform: 'translateY(-8px) scale(1.02)',
                       boxShadow: theme => theme.palette.mode === 'dark'
-                        ? '0 25px 50px rgba(0, 123, 255, 0.4), 0 0 25px rgba(255, 215, 0, 0.2)'
-                        : '0 25px 50px rgba(0, 123, 255, 0.3), 0 0 25px rgba(255, 215, 0, 0.15)',
+                        ? '0 30px 60px rgba(0, 123, 255, 0.4), 0 0 30px rgba(255, 215, 0, 0.2)'
+                        : '0 30px 60px rgba(0, 123, 255, 0.3), 0 0 30px rgba(255, 215, 0, 0.15)',
                       '&::before': {
                         left: '100%',
                       }
@@ -463,10 +468,10 @@ const Dashboard = () => {
                     background: theme => theme.palette.mode === 'dark'
                       ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
                       : 'linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 50%, #fff3e0 100%)',
-                    borderRadius: '16px',
+                    borderRadius: '20px',
                     boxShadow: theme => theme.palette.mode === 'dark'
-                      ? '0 15px 35px rgba(0, 123, 255, 0.3), 0 0 15px rgba(255, 215, 0, 0.1)'
-                      : '0 15px 35px rgba(0, 123, 255, 0.2), 0 0 15px rgba(255, 215, 0, 0.1)',
+                      ? '0 20px 40px rgba(0, 123, 255, 0.3), 0 0 20px rgba(255, 215, 0, 0.1)'
+                      : '0 20px 40px rgba(0, 123, 255, 0.2), 0 0 20px rgba(255, 215, 0, 0.1)',
                     border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,215,0,0.3)' : '1px solid rgba(0,123,255,0.2)',
                     transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                     animation: 'fadeInUp 0.6s ease-out',
@@ -483,10 +488,10 @@ const Dashboard = () => {
                       transition: 'left 0.5s',
                     },
                     '&:hover': {
-                      transform: 'translateY(-6px) scale(1.02)',
+                      transform: 'translateY(-8px) scale(1.02)',
                       boxShadow: theme => theme.palette.mode === 'dark'
-                        ? '0 25px 50px rgba(0, 123, 255, 0.4), 0 0 25px rgba(255, 215, 0, 0.2)'
-                        : '0 25px 50px rgba(0, 123, 255, 0.3), 0 0 25px rgba(255, 215, 0, 0.15)',
+                        ? '0 30px 60px rgba(0, 123, 255, 0.4), 0 0 30px rgba(255, 215, 0, 0.2)'
+                        : '0 30px 60px rgba(0, 123, 255, 0.3), 0 0 30px rgba(255, 215, 0, 0.15)',
                       '&::before': {
                         left: '100%',
                       }

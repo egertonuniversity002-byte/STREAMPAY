@@ -11,10 +11,10 @@ import DotsVertical from 'mdi-material-ui/DotsVertical'
 
 const CardStatsVertical = props => {
   // ** Props
-  const { title, subtitle, color, icon, stats, trend, trendNumber } = props
+  const { title, subtitle, color, icon, stats, trend, trendNumber, sx } = props
 
   return (
-    <Card sx={{
+    <Card sx={[{
       background: theme => theme.palette.mode === 'dark' ? 'linear-gradient(135deg, #1e1e2f 0%, #2c2c3e 100%)' : 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
       borderRadius: '16px',
       boxShadow: theme => theme.palette.mode === 'dark' ? '0 15px 35px rgba(0,0,0,0.7)' : '0 15px 35px rgba(0,0,0,0.1)',
@@ -24,7 +24,7 @@ const CardStatsVertical = props => {
         transform: 'translateY(-4px)',
         boxShadow: theme => theme.palette.mode === 'dark' ? '0 25px 50px rgba(0,0,0,0.9)' : '0 25px 50px rgba(0,0,0,0.15)'
       }
-    }}>
+    }, sx]}>
       <CardContent sx={{
         background: theme => theme.palette.mode === 'dark' ? 'rgba(30,30,47,0.6)' : 'rgba(255,255,255,0.6)',
         backdropFilter: 'blur(10px)',
