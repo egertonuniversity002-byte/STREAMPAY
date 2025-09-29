@@ -12,7 +12,15 @@ const ListSubheader = styled(props => <MuiListSubheader component='li' {...props
   marginTop: theme.spacing(7),
   marginBottom: theme.spacing(2),
   backgroundColor: 'transparent',
-  transition: 'padding-left .25s ease-in-out'
+  transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+  '&:hover': {
+    backgroundColor: theme.palette.mode === 'dark'
+      ? 'rgba(255, 215, 0, 0.05)'
+      : 'rgba(0, 123, 255, 0.05)',
+    borderRadius: theme.spacing(1),
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1)
+  }
 }))
 
 const TypographyHeaderText = styled(Typography)(({ theme }) => ({
@@ -21,7 +29,13 @@ const TypographyHeaderText = styled(Typography)(({ theme }) => ({
   letterSpacing: '0.21px',
   textTransform: 'uppercase',
   color: theme.palette.text.disabled,
-  fontWeight: theme.typography.fontWeightMedium
+  fontWeight: theme.typography.fontWeightMedium,
+  transition: 'color 0.3s ease',
+  '&:hover': {
+    color: theme.palette.mode === 'dark'
+      ? 'rgba(255, 215, 0, 0.8)'
+      : 'rgba(0, 123, 255, 0.8)'
+  }
 }))
 
 const VerticalNavSectionTitle = props => {

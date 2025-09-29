@@ -27,10 +27,26 @@ const MenuNavLink = styled(ListItemButton)(({ theme }) => ({
   borderBottomRightRadius: 100,
   color: theme.palette.text.primary,
   padding: theme.spacing(2.25, 3.5),
-  transition: 'opacity .25s ease-in-out',
+  transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+  backgroundColor: 'transparent',
+  '&:hover': {
+    backgroundColor: theme.palette.mode === 'dark'
+      ? 'rgba(255, 215, 0, 0.1)'
+      : 'rgba(0, 123, 255, 0.1)',
+    transform: 'translateX(5px)',
+    boxShadow: theme.palette.mode === 'dark'
+      ? '0 4px 15px rgba(255, 215, 0, 0.2)'
+      : '0 4px 15px rgba(0, 123, 255, 0.2)'
+  },
   '&.active, &.active:hover': {
-    boxShadow: theme.shadows[3],
-    backgroundImage: `linear-gradient(98deg, ${theme.palette.customColors.primaryGradient}, ${theme.palette.primary.main} 94%)`
+    boxShadow: theme.palette.mode === 'dark'
+      ? '0 4px 20px rgba(255, 215, 0, 0.3), 0 0 20px rgba(255, 215, 0, 0.1)'
+      : '0 4px 20px rgba(0, 123, 255, 0.3), 0 0 20px rgba(0, 123, 255, 0.1)',
+    backgroundImage: `linear-gradient(98deg, ${theme.palette.customColors.primaryGradient}, ${theme.palette.primary.main} 94%)`,
+    transform: 'translateX(10px)',
+    border: theme.palette.mode === 'dark'
+      ? '1px solid rgba(255, 215, 0, 0.3)'
+      : '1px solid rgba(0, 123, 255, 0.3)'
   },
   '&.active .MuiTypography-root, &.active .MuiSvgIcon-root': {
     color: `${theme.palette.common.white} !important`

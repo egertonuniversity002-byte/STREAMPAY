@@ -55,15 +55,24 @@ const Drawer = props => {
         '& .MuiDrawer-paper': {
           borderRight: 0,
           backgroundColor: theme.palette.mode === 'dark'
-            ? 'rgba(15, 15, 35, 0.95)'
-            : 'rgba(255, 255, 255, 0.95)',
-          backdropFilter: 'blur(20px)',
+            ? 'rgba(15, 15, 35, 0.6)'
+            : 'rgba(255, 255, 255, 0.6)',
+          backdropFilter: 'blur(10px)',
           borderRight: theme.palette.mode === 'dark'
-            ? '1px solid rgba(255, 215, 0, 0.2)'
-            : '1px solid rgba(0, 123, 255, 0.2)',
+            ? '1px solid rgba(255, 215, 0, 0.3)'
+            : '1px solid rgba(0, 123, 255, 0.3)',
           boxShadow: theme.palette.mode === 'dark'
-            ? '4px 0 20px rgba(0, 123, 255, 0.3)'
-            : '4px 0 20px rgba(0, 123, 255, 0.2)'
+            ? '4px 0 25px rgba(0, 123, 255, 0.4), 0 0 50px rgba(255, 215, 0, 0.1)'
+            : '4px 0 25px rgba(0, 123, 255, 0.3), 0 0 50px rgba(0, 123, 255, 0.1)',
+          transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+          '&:hover': {
+            backgroundColor: theme.palette.mode === 'dark'
+              ? 'rgba(15, 15, 35, 0.8)'
+              : 'rgba(255, 255, 255, 0.8)',
+            boxShadow: theme.palette.mode === 'dark'
+              ? '4px 0 30px rgba(0, 123, 255, 0.5), 0 0 60px rgba(255, 215, 0, 0.15)'
+              : '4px 0 30px rgba(0, 123, 255, 0.4), 0 0 60px rgba(0, 123, 255, 0.15)'
+          }
         }
       }}
     >
