@@ -40,7 +40,37 @@ import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
-  [theme.breakpoints.up('sm')]: { width: '28rem' }
+  [theme.breakpoints.up('sm')]: { width: '28rem' },
+  background: theme => theme.palette.mode === 'dark'
+    ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
+    : 'linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 50%, #fff3e0 100%)',
+  borderRadius: '20px',
+  boxShadow: theme => theme.palette.mode === 'dark'
+    ? '0 20px 40px rgba(0, 123, 255, 0.3), 0 0 20px rgba(255, 215, 0, 0.1)'
+    : '0 20px 40px rgba(0, 123, 255, 0.2), 0 0 20px rgba(255, 215, 0, 0.1)',
+  border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,215,0,0.3)' : '1px solid rgba(0,123,255,0.2)',
+  transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+  position: 'relative',
+  overflow: 'hidden',
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    top: 0,
+    left: '-100%',
+    width: '100%',
+    height: '100%',
+    background: 'linear-gradient(90deg, transparent, rgba(255,215,0,0.3), transparent)',
+    transition: 'left 0.5s',
+  },
+  '&:hover': {
+    transform: 'translateY(-8px) scale(1.02)',
+    boxShadow: theme => theme.palette.mode === 'dark'
+      ? '0 30px 60px rgba(0, 123, 255, 0.4), 0 0 30px rgba(255, 215, 0, 0.2)'
+      : '0 30px 60px rgba(0, 123, 255, 0.3), 0 0 30px rgba(255, 215, 0, 0.15)',
+    '&::before': {
+      left: '100%',
+    }
+  },
 }))
 
 const LinkStyled = styled('a')(({ theme }) => ({
@@ -282,7 +312,31 @@ const RegisterPage = () => {
               label='Username'
               value={values.username}
               onChange={handleChange('username')}
-              sx={{ marginBottom: 4 }}
+              sx={{
+                marginBottom: 4,
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: '12px',
+                  background: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.8)',
+                  backdropFilter: 'blur(10px)',
+                  border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,123,255,0.2)',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    background: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.9)',
+                    boxShadow: theme => theme.palette.mode === 'dark' ? '0 4px 15px rgba(255,215,0,0.2)' : '0 4px 15px rgba(0,123,255,0.2)',
+                  },
+                  '&.Mui-focused': {
+                    boxShadow: theme => theme.palette.mode === 'dark' ? '0 0 0 3px rgba(255,215,0,0.3)' : '0 0 0 3px rgba(0,123,255,0.3)',
+                    borderColor: theme => theme.palette.mode === 'dark' ? 'rgba(255,215,0,0.5)' : 'primary.main',
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: theme => theme.palette.mode === 'dark' ? '#ddd' : '#2c3e50',
+                  fontWeight: 600,
+                },
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderColor: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,123,255,0.3)',
+                },
+              }}
             />
             <TextField
               fullWidth
@@ -290,7 +344,31 @@ const RegisterPage = () => {
               id='full_name'
               value={values.full_name}
               onChange={handleChange('full_name')}
-              sx={{ marginBottom: 4 }}
+              sx={{
+                marginBottom: 4,
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: '12px',
+                  background: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.8)',
+                  backdropFilter: 'blur(10px)',
+                  border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,123,255,0.2)',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    background: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.9)',
+                    boxShadow: theme => theme.palette.mode === 'dark' ? '0 4px 15px rgba(255,215,0,0.2)' : '0 4px 15px rgba(0,123,255,0.2)',
+                  },
+                  '&.Mui-focused': {
+                    boxShadow: theme => theme.palette.mode === 'dark' ? '0 0 0 3px rgba(255,215,0,0.3)' : '0 0 0 3px rgba(0,123,255,0.3)',
+                    borderColor: theme => theme.palette.mode === 'dark' ? 'rgba(255,215,0,0.5)' : 'primary.main',
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: theme => theme.palette.mode === 'dark' ? '#ddd' : '#2c3e50',
+                  fontWeight: 600,
+                },
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderColor: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,123,255,0.3)',
+                },
+              }}
             />
             <TextField
               fullWidth
@@ -299,7 +377,31 @@ const RegisterPage = () => {
               id='email'
               value={values.email}
               onChange={handleChange('email')}
-              sx={{ marginBottom: 4 }}
+              sx={{
+                marginBottom: 4,
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: '12px',
+                  background: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.8)',
+                  backdropFilter: 'blur(10px)',
+                  border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,123,255,0.2)',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    background: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.9)',
+                    boxShadow: theme => theme.palette.mode === 'dark' ? '0 4px 15px rgba(255,215,0,0.2)' : '0 4px 15px rgba(0,123,255,0.2)',
+                  },
+                  '&.Mui-focused': {
+                    boxShadow: theme => theme.palette.mode === 'dark' ? '0 0 0 3px rgba(255,215,0,0.3)' : '0 0 0 3px rgba(0,123,255,0.3)',
+                    borderColor: theme => theme.palette.mode === 'dark' ? 'rgba(255,215,0,0.5)' : 'primary.main',
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: theme => theme.palette.mode === 'dark' ? '#ddd' : '#2c3e50',
+                  fontWeight: 600,
+                },
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderColor: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,123,255,0.3)',
+                },
+              }}
             />
             <TextField
               fullWidth
@@ -307,7 +409,31 @@ const RegisterPage = () => {
               id='phone'
               value={values.phone}
               onChange={handleChange('phone')}
-              sx={{ marginBottom: 4 }}
+              sx={{
+                marginBottom: 4,
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: '12px',
+                  background: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.8)',
+                  backdropFilter: 'blur(10px)',
+                  border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,123,255,0.2)',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    background: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.9)',
+                    boxShadow: theme => theme.palette.mode === 'dark' ? '0 4px 15px rgba(255,215,0,0.2)' : '0 4px 15px rgba(0,123,255,0.2)',
+                  },
+                  '&.Mui-focused': {
+                    boxShadow: theme => theme.palette.mode === 'dark' ? '0 0 0 3px rgba(255,215,0,0.3)' : '0 0 0 3px rgba(0,123,255,0.3)',
+                    borderColor: theme => theme.palette.mode === 'dark' ? 'rgba(255,215,0,0.5)' : 'primary.main',
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: theme => theme.palette.mode === 'dark' ? '#ddd' : '#2c3e50',
+                  fontWeight: 600,
+                },
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderColor: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,123,255,0.3)',
+                },
+              }}
               placeholder='07xxxxxxxx or 2547xxxxxxxx'
             />
             <TextField
@@ -316,7 +442,23 @@ const RegisterPage = () => {
               id='referral_code'
               value={values.referral_code}
               disabled
-              sx={{ marginBottom: 4 }}
+              sx={{
+                marginBottom: 4,
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: '12px',
+                  background: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.8)',
+                  backdropFilter: 'blur(10px)',
+                  border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,123,255,0.2)',
+                  opacity: 0.7,
+                },
+                '& .MuiInputLabel-root': {
+                  color: theme => theme.palette.mode === 'dark' ? '#ddd' : '#2c3e50',
+                  fontWeight: 600,
+                },
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderColor: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,123,255,0.3)',
+                },
+              }}
             />
             <FormControl fullWidth sx={{ marginBottom: 4 }}>
               <InputLabel id='preferred-currency-label'>Preferred Currency</InputLabel>
@@ -326,9 +468,36 @@ const RegisterPage = () => {
                 value={values.preferred_currency}
                 label='Preferred Currency'
                 onChange={handleChange('preferred_currency')}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: '12px',
+                    background: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.8)',
+                    backdropFilter: 'blur(10px)',
+                    border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,123,255,0.2)',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      background: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.9)',
+                      boxShadow: theme => theme.palette.mode === 'dark' ? '0 4px 15px rgba(255,215,0,0.2)' : '0 4px 15px rgba(0,123,255,0.2)',
+                    },
+                    '&.Mui-focused': {
+                      boxShadow: theme => theme.palette.mode === 'dark' ? '0 0 0 3px rgba(255,215,0,0.3)' : '0 0 0 3px rgba(0,123,255,0.3)',
+                      borderColor: theme => theme.palette.mode === 'dark' ? 'rgba(255,215,0,0.5)' : 'primary.main',
+                    },
+                  },
+                  '& .MuiInputLabel-root': {
+                    color: theme => theme.palette.mode === 'dark' ? '#ddd' : '#2c3e50',
+                    fontWeight: 600,
+                  },
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,123,255,0.3)',
+                  },
+                  '& .MuiSelect-select': {
+                    padding: '15px 14px',
+                  },
+                }}
               >
                 {preferredCurrencies.map(currency => (
-                  <MenuItem key={currency.value} value={currency.value}>
+                  <MenuItem key={currency.value} value={currency.value} sx={{ fontWeight: 500 }}>
                     {currency.label}
                   </MenuItem>
                 ))}
@@ -349,11 +518,41 @@ const RegisterPage = () => {
                       onClick={handleClickShowPassword}
                       onMouseDown={handleMouseDownPassword}
                       aria-label='toggle password visibility'
+                      sx={{
+                        color: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.7)' : 'rgba(0,123,255,0.7)',
+                        '&:hover': {
+                          color: theme => theme.palette.mode === 'dark' ? 'rgba(255,215,0,0.8)' : 'primary.main',
+                        }
+                      }}
                     >
                       {values.showPassword ? <EyeOutline fontSize='small' /> : <EyeOffOutline fontSize='small' />}
                     </IconButton>
                   </InputAdornment>
                 }
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: '12px',
+                    background: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.8)',
+                    backdropFilter: 'blur(10px)',
+                    border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,123,255,0.2)',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      background: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.9)',
+                      boxShadow: theme => theme.palette.mode === 'dark' ? '0 4px 15px rgba(255,215,0,0.2)' : '0 4px 15px rgba(0,123,255,0.2)',
+                    },
+                    '&.Mui-focused': {
+                      boxShadow: theme => theme.palette.mode === 'dark' ? '0 0 0 3px rgba(255,215,0,0.3)' : '0 0 0 3px rgba(0,123,255,0.3)',
+                      borderColor: theme => theme.palette.mode === 'dark' ? 'rgba(255,215,0,0.5)' : 'primary.main',
+                    },
+                  },
+                  '& .MuiInputLabel-root': {
+                    color: theme => theme.palette.mode === 'dark' ? '#ddd' : '#2c3e50',
+                    fontWeight: 600,
+                  },
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,123,255,0.3)',
+                  },
+                }}
               />
             </FormControl>
             <FormControlLabel
@@ -377,14 +576,53 @@ const RegisterPage = () => {
                 {success}
               </Alert>
             )}
-            <Button fullWidth size='large' type='submit' variant='contained' disabled={loading} sx={{ marginBottom: 7 }}>
-              {loading ? <CircularProgress size={24} /> : 'Register'}
+            <Button fullWidth size='large' type='submit' variant='contained' disabled={loading} sx={{
+              marginBottom: 7,
+              borderRadius: '12px',
+              background: theme => theme.palette.mode === 'dark'
+                ? 'linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #ffd700 100%)'
+                : 'linear-gradient(135deg, #007bff 0%, #0056b3 50%, #007bff 100%)',
+              boxShadow: theme => theme.palette.mode === 'dark'
+                ? '0 8px 25px rgba(255,215,0,0.4)'
+                : '0 8px 25px rgba(0,123,255,0.4)',
+              color: 'common.white',
+              fontWeight: 600,
+              textTransform: 'none',
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                background: theme => theme.palette.mode === 'dark'
+                  ? 'linear-gradient(135deg, #ffed4e 0%, #ffd700 50%, #ffed4e 100%)'
+                  : 'linear-gradient(135deg, #0056b3 0%, #007bff 50%, #0056b3 100%)',
+                boxShadow: theme => theme.palette.mode === 'dark'
+                  ? '0 12px 35px rgba(255,215,0,0.6)'
+                  : '0 12px 35px rgba(0,123,255,0.6)',
+                transform: 'translateY(-2px)',
+              },
+              '&:disabled': {
+                background: 'rgba(0,0,0,0.12)',
+                boxShadow: 'none',
+                transform: 'none',
+              },
+            }}>
+              {loading ? <CircularProgress size={24} color='inherit' /> : 'Register'}
             </Button>
           </form>
           <Divider sx={{ my: 4 }}>Already have an account?</Divider>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Typography sx={{ mr: 2 }}>Sign in instead</Typography>
-            <Button href='/pages/login' component='a' variant='outlined'>
+            <Typography sx={{ mr: 2, color: theme => theme.palette.mode === 'dark' ? '#ddd' : '#2c3e50' }}>Sign in instead</Typography>
+            <Button href='/pages/login' component='a' variant='outlined' sx={{
+              borderRadius: '12px',
+              border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,215,0,0.5)' : '1px solid rgba(0,123,255,0.5)',
+              color: theme => theme.palette.mode === 'dark' ? 'rgba(255,215,0,0.8)' : 'primary.main',
+              fontWeight: 600,
+              textTransform: 'none',
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                background: theme => theme.palette.mode === 'dark' ? 'rgba(255,215,0,0.1)' : 'rgba(0,123,255,0.1)',
+                borderColor: theme => theme.palette.mode === 'dark' ? 'rgba(255,215,0,1)' : 'primary.main',
+                boxShadow: theme => theme.palette.mode === 'dark' ? '0 4px 15px rgba(255,215,0,0.3)' : '0 4px 15px rgba(0,123,255,0.3)',
+              },
+            }}>
               Login
             </Button>
           </Box>

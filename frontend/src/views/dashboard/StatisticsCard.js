@@ -170,6 +170,22 @@ const StatisticsCard = () => {
       const valueColor = getValueColor(item.stats, item.title)
       const adviceText = getAdviceText(item.stats, item.title)
 
+      const isPositive = valueColor === 'success.main'
+      const getAvatarGradient = (title) => {
+        switch (title) {
+          case 'Total Referrals':
+            return 'linear-gradient(135deg, #007bff 0%, #0056b3 100%)'
+          case 'Total Withdrawn':
+            return 'linear-gradient(135deg, #ffd700 0%, #ffed4e 100%)'
+          case 'Tasks Earnings':
+            return 'linear-gradient(135deg, #28a745 0%, #20c997 100%)'
+          case 'Activation Expense':
+            return 'linear-gradient(135deg, #6f42c1 0%, #e83e8c 100%)'
+          default:
+            return `${item.color}.main`
+        }
+      }
+
       return (
         <Grid item xs={12} sm={3} key={index}>
           <Box key={index} sx={{ display: 'flex', alignItems: 'center' }}>
@@ -179,20 +195,40 @@ const StatisticsCard = () => {
                 mr: 3,
                 width: 44,
                 height: 44,
-                boxShadow: 3,
+                boxShadow: isPositive ? '0 0 20px rgba(40, 167, 69, 0.5)' : '0 4px 15px rgba(0,0,0,0.2)',
                 color: 'common.white',
-                backgroundColor: `${item.color}.main`
+                background: getAvatarGradient(item.title),
+                animation: isPositive ? 'pulse 2s infinite' : 'none',
+                '@keyframes pulse': {
+                  '0%': { transform: 'scale(1)', boxShadow: '0 0 20px rgba(40, 167, 69, 0.5)' },
+                  '50%': { transform: 'scale(1.1)', boxShadow: '0 0 30px rgba(40, 167, 69, 0.8)' },
+                  '100%': { transform: 'scale(1)', boxShadow: '0 0 20px rgba(40, 167, 69, 0.5)' },
+                },
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  transform: 'scale(1.05)',
+                }
               }}
             >
               {item.icon}
             </Avatar>
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-              <Typography variant='caption'>{item.title}</Typography>
-              <Typography variant='h6' sx={{ color: valueColor }}>
+              <Typography variant='caption' sx={{ color: theme => theme.palette.mode === 'dark' ? '#bbb' : '#666', fontWeight: 500 }}>
+                {item.title}
+              </Typography>
+              <Typography variant='h6' sx={{
+                color: valueColor,
+                fontWeight: 'bold',
+                animation: isPositive ? 'glow 2s infinite alternate' : 'none',
+                '@keyframes glow': {
+                  '0%': { textShadow: '0 0 5px rgba(40, 167, 69, 0.5)' },
+                  '100%': { textShadow: '0 0 15px rgba(40, 167, 69, 0.8)' },
+                },
+              }}>
                 {item.stats}
               </Typography>
               {adviceText && (
-                <Typography variant='caption' sx={{ color: 'warning.main', fontSize: '0.7rem', mt: 0.5 }}>
+                <Typography variant='caption' sx={{ color: 'warning.main', fontSize: '0.7rem', mt: 0.5, fontStyle: 'italic' }}>
                   {adviceText}
                 </Typography>
               )}
@@ -205,15 +241,47 @@ const StatisticsCard = () => {
 
   return (
     <Card sx={{
-      background: theme => theme.palette.mode === 'dark' ? 'linear-gradient(135deg, #1e1e2f 0%, #2c2c3e 100%)' : 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
-      borderRadius: '16px',
-      boxShadow: theme => theme.palette.mode === 'dark' ? '0 15px 35px rgba(0,0,0,0.7)' : '0 15px 35px rgba(0,0,0,0.1)',
-      border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(255,255,255,0.8)',
-      transition: 'all 0.3s ease',
+      background: theme => theme.palette.mode === 'dark'
+        ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
+        : 'linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 50%, #fff3e0 100%)',
+      borderRadius: '20px',
+      boxShadow: theme => theme.palette.mode === 'dark'
+        ? '0 20px 40px rgba(0, 123, 255, 0.3), 0 0 20px rgba(255, 215, 0, 0.1)'
+        : '0 20px 40px rgba(0, 123, 255, 0.2), 0 0 20px rgba(255, 215, 0, 0.1)',
+      border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,215,0,0.3)' : '1px solid rgba(0,123,255,0.2)',
+      transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+      animation: 'fadeInUp 0.6s ease-out',
+      position: 'relative',
+      overflow: 'hidden',
+      '&::before': {
+        content: '""',
+        position: 'absolute',
+        top: 0,
+        left: '-100%',
+        width: '100%',
+        height: '100%',
+        background: 'linear-gradient(90deg, transparent, rgba(255,215,0,0.3), transparent)',
+        transition: 'left 0.5s',
+      },
       '&:hover': {
-        transform: 'translateY(-4px)',
-        boxShadow: theme => theme.palette.mode === 'dark' ? '0 25px 50px rgba(0,0,0,0.9)' : '0 25px 50px rgba(0,0,0,0.15)'
-      }
+        transform: 'translateY(-8px) scale(1.02)',
+        boxShadow: theme => theme.palette.mode === 'dark'
+          ? '0 30px 60px rgba(0, 123, 255, 0.4), 0 0 30px rgba(255, 215, 0, 0.2)'
+          : '0 30px 60px rgba(0, 123, 255, 0.3), 0 0 30px rgba(255, 215, 0, 0.15)',
+        '&::before': {
+          left: '100%',
+        }
+      },
+      '@keyframes fadeInUp': {
+        '0%': {
+          opacity: 0,
+          transform: 'translateY(20px)',
+        },
+        '100%': {
+          opacity: 1,
+          transform: 'translateY(0)',
+        },
+      },
     }}>
       <CardHeader
         title='Statistics Card'

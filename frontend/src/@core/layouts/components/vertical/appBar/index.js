@@ -11,6 +11,19 @@ const AppBar = styled(MuiAppBar)(({ theme }) => ({
   backgroundColor: 'transparent',
   color: theme.palette.text.primary,
   minHeight: theme.mixins.toolbar.minHeight,
+  position: 'sticky',
+  top: 0,
+  zIndex: 1100,
+  backdropFilter: 'blur(10px)',
+  background: theme => theme.palette.mode === 'dark'
+    ? 'rgba(15, 15, 35, 0.95)'
+    : 'rgba(255, 255, 255, 0.95)',
+  borderBottom: theme => theme.palette.mode === 'dark'
+    ? '1px solid rgba(255, 215, 0, 0.2)'
+    : '1px solid rgba(0, 123, 255, 0.2)',
+  boxShadow: theme => theme.palette.mode === 'dark'
+    ? '0 4px 20px rgba(0, 123, 255, 0.3)'
+    : '0 4px 20px rgba(0, 123, 255, 0.2)',
   [theme.breakpoints.down('sm')]: {
     paddingLeft: theme.spacing(4),
     paddingRight: theme.spacing(4)

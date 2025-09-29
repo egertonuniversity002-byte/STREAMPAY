@@ -48,7 +48,37 @@ import { useAuth } from 'src/contexts/AuthContext'
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
-  [theme.breakpoints.up('sm')]: { width: '28rem' }
+  [theme.breakpoints.up('sm')]: { width: '28rem' },
+  background: theme => theme.palette.mode === 'dark'
+    ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
+    : 'linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 50%, #fff3e0 100%)',
+  borderRadius: '20px',
+  boxShadow: theme => theme.palette.mode === 'dark'
+    ? '0 20px 40px rgba(0, 123, 255, 0.3), 0 0 20px rgba(255, 215, 0, 0.1)'
+    : '0 20px 40px rgba(0, 123, 255, 0.2), 0 0 20px rgba(255, 215, 0, 0.1)',
+  border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,215,0,0.3)' : '1px solid rgba(0,123,255,0.2)',
+  transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+  position: 'relative',
+  overflow: 'hidden',
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    top: 0,
+    left: '-100%',
+    width: '100%',
+    height: '100%',
+    background: 'linear-gradient(90deg, transparent, rgba(255,215,0,0.3), transparent)',
+    transition: 'left 0.5s',
+  },
+  '&:hover': {
+    transform: 'translateY(-8px) scale(1.02)',
+    boxShadow: theme => theme.palette.mode === 'dark'
+      ? '0 30px 60px rgba(0, 123, 255, 0.4), 0 0 30px rgba(255, 215, 0, 0.2)'
+      : '0 30px 60px rgba(0, 123, 255, 0.3), 0 0 30px rgba(255, 215, 0, 0.15)',
+    '&::before': {
+      left: '100%',
+    }
+  },
 }))
 
 const LinkStyled = styled('a')(({ theme }) => ({
@@ -236,7 +266,31 @@ const LoginPage = () => {
               label='Email'
               value={values.email}
               onChange={handleChange('email')}
-              sx={{ marginBottom: 4 }}
+              sx={{
+                marginBottom: 4,
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: '12px',
+                  background: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.8)',
+                  backdropFilter: 'blur(10px)',
+                  border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,123,255,0.2)',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    background: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.9)',
+                    boxShadow: theme => theme.palette.mode === 'dark' ? '0 4px 15px rgba(255,215,0,0.2)' : '0 4px 15px rgba(0,123,255,0.2)',
+                  },
+                  '&.Mui-focused': {
+                    boxShadow: theme => theme.palette.mode === 'dark' ? '0 0 0 3px rgba(255,215,0,0.3)' : '0 0 0 3px rgba(0,123,255,0.3)',
+                    borderColor: theme => theme.palette.mode === 'dark' ? 'rgba(255,215,0,0.5)' : 'primary.main',
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: theme => theme.palette.mode === 'dark' ? '#ddd' : '#2c3e50',
+                  fontWeight: 600,
+                },
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderColor: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,123,255,0.3)',
+                },
+              }}
             />
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-login-password'>Password</InputLabel>
@@ -253,11 +307,41 @@ const LoginPage = () => {
                       onClick={handleClickShowPassword}
                       onMouseDown={handleMouseDownPassword}
                       aria-label='toggle password visibility'
+                      sx={{
+                        color: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.7)' : 'rgba(0,123,255,0.7)',
+                        '&:hover': {
+                          color: theme => theme.palette.mode === 'dark' ? 'rgba(255,215,0,0.8)' : 'primary.main',
+                        }
+                      }}
                     >
                       {values.showPassword ? <EyeOutline /> : <EyeOffOutline />}
                     </IconButton>
                   </InputAdornment>
                 }
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: '12px',
+                    background: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.8)',
+                    backdropFilter: 'blur(10px)',
+                    border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,123,255,0.2)',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      background: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.9)',
+                      boxShadow: theme => theme.palette.mode === 'dark' ? '0 4px 15px rgba(255,215,0,0.2)' : '0 4px 15px rgba(0,123,255,0.2)',
+                    },
+                    '&.Mui-focused': {
+                      boxShadow: theme => theme.palette.mode === 'dark' ? '0 0 0 3px rgba(255,215,0,0.3)' : '0 0 0 3px rgba(0,123,255,0.3)',
+                      borderColor: theme => theme.palette.mode === 'dark' ? 'rgba(255,215,0,0.5)' : 'primary.main',
+                    },
+                  },
+                  '& .MuiInputLabel-root': {
+                    color: theme => theme.palette.mode === 'dark' ? '#ddd' : '#2c3e50',
+                    fontWeight: 600,
+                  },
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,123,255,0.3)',
+                  },
+                }}
               />
             </FormControl>
             <Box
@@ -282,7 +366,34 @@ const LoginPage = () => {
               fullWidth
               size='large'
               variant='contained'
-              sx={{ marginBottom: 7 }}
+              sx={{
+                marginBottom: 7,
+                borderRadius: '12px',
+                background: theme => theme.palette.mode === 'dark'
+                  ? 'linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #ffd700 100%)'
+                  : 'linear-gradient(135deg, #007bff 0%, #0056b3 50%, #007bff 100%)',
+                boxShadow: theme => theme.palette.mode === 'dark'
+                  ? '0 8px 25px rgba(255,215,0,0.4)'
+                  : '0 8px 25px rgba(0,123,255,0.4)',
+                color: 'common.white',
+                fontWeight: 600,
+                textTransform: 'none',
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  background: theme => theme.palette.mode === 'dark'
+                    ? 'linear-gradient(135deg, #ffed4e 0%, #ffd700 50%, #ffed4e 100%)'
+                    : 'linear-gradient(135deg, #0056b3 0%, #007bff 50%, #0056b3 100%)',
+                  boxShadow: theme => theme.palette.mode === 'dark'
+                    ? '0 12px 35px rgba(255,215,0,0.6)'
+                    : '0 12px 35px rgba(0,123,255,0.6)',
+                  transform: 'translateY(-2px)',
+                },
+                '&:disabled': {
+                  background: 'rgba(0,0,0,0.12)',
+                  boxShadow: 'none',
+                  transform: 'none',
+                },
+              }}
               type='submit'
               disabled={loading}
             >

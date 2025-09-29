@@ -111,13 +111,12 @@ const TaskList = ({ onStartTask }) => {
     }
   }
 
-const formatCurrency = (amount) => {
-  return new Intl.NumberFormat('en-KE', {
-    style: 'currency',
-    currency: currency
-  }).format(amount)
-}
-
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat('en-KE', {
+      style: 'currency',
+      currency: currency
+    }).format(amount)
+  }
 
   const getTaskTypeColor = (type) => {
     const colors = {
@@ -180,7 +179,38 @@ const formatCurrency = (amount) => {
       {/* Task Stats Cards */}
       <Grid container spacing={6} sx={{ mb: 6 }}>
         <Grid item xs={12} md={3}>
-          <Card>
+          <Card sx={{
+            background: theme => theme.palette.mode === 'dark'
+              ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
+              : 'linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 50%, #fff3e0 100%)',
+            borderRadius: '20px',
+            boxShadow: theme => theme.palette.mode === 'dark'
+              ? '0 20px 40px rgba(0, 123, 255, 0.3), 0 0 20px rgba(255, 215, 0, 0.1)'
+              : '0 20px 40px rgba(0, 123, 255, 0.2), 0 0 20px rgba(255, 215, 0, 0.1)',
+            border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,215,0,0.3)' : '1px solid rgba(0,123,255,0.2)',
+            transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+            position: 'relative',
+            overflow: 'hidden',
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              top: 0,
+              left: '-100%',
+              width: '100%',
+              height: '100%',
+              background: 'linear-gradient(90deg, transparent, rgba(255,215,0,0.3), transparent)',
+              transition: 'left 0.5s',
+            },
+            '&:hover': {
+              transform: 'translateY(-8px) scale(1.02)',
+              boxShadow: theme => theme.palette.mode === 'dark'
+                ? '0 30px 60px rgba(0, 123, 255, 0.4), 0 0 30px rgba(255, 215, 0, 0.2)'
+                : '0 30px 60px rgba(0, 123, 255, 0.3), 0 0 30px rgba(255, 215, 0, 0.15)',
+              '&::before': {
+                left: '100%',
+              }
+            },
+          }}>
             <CardContent>
               <Box display="flex" alignItems="center">
                 <CheckCircleOutline color="success" sx={{ mr: 1 }} />
@@ -196,7 +226,38 @@ const formatCurrency = (amount) => {
         </Grid>
 
         <Grid item xs={12} md={3}>
-          <Card>
+          <Card sx={{
+            background: theme => theme.palette.mode === 'dark'
+              ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
+              : 'linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 50%, #fff3e0 100%)',
+            borderRadius: '20px',
+            boxShadow: theme => theme.palette.mode === 'dark'
+              ? '0 20px 40px rgba(0, 123, 255, 0.3), 0 0 20px rgba(255, 215, 0, 0.1)'
+              : '0 20px 40px rgba(0, 123, 255, 0.2), 0 0 20px rgba(255, 215, 0, 0.1)',
+            border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,215,0,0.3)' : '1px solid rgba(0,123,255,0.2)',
+            transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+            position: 'relative',
+            overflow: 'hidden',
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              top: 0,
+              left: '-100%',
+              width: '100%',
+              height: '100%',
+              background: 'linear-gradient(90deg, transparent, rgba(255,215,0,0.3), transparent)',
+              transition: 'left 0.5s',
+            },
+            '&:hover': {
+              transform: 'translateY(-8px) scale(1.02)',
+              boxShadow: theme => theme.palette.mode === 'dark'
+                ? '0 30px 60px rgba(0, 123, 255, 0.4), 0 0 30px rgba(255, 215, 0, 0.2)'
+                : '0 30px 60px rgba(0, 123, 255, 0.3), 0 0 30px rgba(255, 215, 0, 0.15)',
+              '&::before': {
+                left: '100%',
+              }
+            },
+          }}>
             <CardContent>
               <Box display="flex" alignItems="center">
                 <ClipboardListOutline color="info" sx={{ mr: 1 }} />
@@ -212,7 +273,38 @@ const formatCurrency = (amount) => {
         </Grid>
 
         <Grid item xs={12} md={3}>
-          <Card>
+          <Card sx={{
+            background: theme => theme.palette.mode === 'dark'
+              ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
+              : 'linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 50%, #fff3e0 100%)',
+            borderRadius: '20px',
+            boxShadow: theme => theme.palette.mode === 'dark'
+              ? '0 20px 40px rgba(0, 123, 255, 0.3), 0 0 20px rgba(255, 215, 0, 0.1)'
+              : '0 20px 40px rgba(0, 123, 255, 0.2), 0 0 20px rgba(255, 215, 0, 0.1)',
+            border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,215,0,0.3)' : '1px solid rgba(0,123,255,0.2)',
+            transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+            position: 'relative',
+            overflow: 'hidden',
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              top: 0,
+              left: '-100%',
+              width: '100%',
+              height: '100%',
+              background: 'linear-gradient(90deg, transparent, rgba(255,215,0,0.3), transparent)',
+              transition: 'left 0.5s',
+            },
+            '&:hover': {
+              transform: 'translateY(-8px) scale(1.02)',
+              boxShadow: theme => theme.palette.mode === 'dark'
+                ? '0 30px 60px rgba(0, 123, 255, 0.4), 0 0 30px rgba(255, 215, 0, 0.2)'
+                : '0 30px 60px rgba(0, 123, 255, 0.3), 0 0 30px rgba(255, 215, 0, 0.15)',
+              '&::before': {
+                left: '100%',
+              }
+            },
+          }}>
             <CardContent>
               <Box display="flex" alignItems="center">
                 <CurrencyUsd color="primary" sx={{ mr: 1 }} />
@@ -228,7 +320,38 @@ const formatCurrency = (amount) => {
         </Grid>
 
         <Grid item xs={12} md={3}>
-          <Card>
+          <Card sx={{
+            background: theme => theme.palette.mode === 'dark'
+              ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
+              : 'linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 50%, #fff3e0 100%)',
+            borderRadius: '20px',
+            boxShadow: theme => theme.palette.mode === 'dark'
+              ? '0 20px 40px rgba(0, 123, 255, 0.3), 0 0 20px rgba(255, 215, 0, 0.1)'
+              : '0 20px 40px rgba(0, 123, 255, 0.2), 0 0 20px rgba(255, 215, 0, 0.1)',
+            border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,215,0,0.3)' : '1px solid rgba(0,123,255,0.2)',
+            transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+            position: 'relative',
+            overflow: 'hidden',
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              top: 0,
+              left: '-100%',
+              width: '100%',
+              height: '100%',
+              background: 'linear-gradient(90deg, transparent, rgba(255,215,0,0.3), transparent)',
+              transition: 'left 0.5s',
+            },
+            '&:hover': {
+              transform: 'translateY(-8px) scale(1.02)',
+              boxShadow: theme => theme.palette.mode === 'dark'
+                ? '0 30px 60px rgba(0, 123, 255, 0.4), 0 0 30px rgba(255, 215, 0, 0.2)'
+                : '0 30px 60px rgba(0, 123, 255, 0.3), 0 0 30px rgba(255, 215, 0, 0.15)',
+              '&::before': {
+                left: '100%',
+              }
+            },
+          }}>
             <CardContent>
               <Box display="flex" alignItems="center">
                 <ClockOutline color="warning" sx={{ mr: 1 }} />
@@ -257,7 +380,41 @@ const formatCurrency = (amount) => {
         <Grid container spacing={4}>
           {tasks.map((task) => (
             <Grid item xs={12} md={6} lg={4} key={task.task_id}>
-              <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+              <Card sx={{
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                background: theme => theme.palette.mode === 'dark'
+                  ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
+                  : 'linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 50%, #fff3e0 100%)',
+                borderRadius: '20px',
+                boxShadow: theme => theme.palette.mode === 'dark'
+                  ? '0 20px 40px rgba(0, 123, 255, 0.3), 0 0 20px rgba(255, 215, 0, 0.1)'
+                  : '0 20px 40px rgba(0, 123, 255, 0.2), 0 0 20px rgba(255, 215, 0, 0.1)',
+                border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,215,0,0.3)' : '1px solid rgba(0,123,255,0.2)',
+                transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                position: 'relative',
+                overflow: 'hidden',
+                '&::before': {
+                  content: '""',
+                  position: 'absolute',
+                  top: 0,
+                  left: '-100%',
+                  width: '100%',
+                  height: '100%',
+                  background: 'linear-gradient(90deg, transparent, rgba(255,215,0,0.3), transparent)',
+                  transition: 'left 0.5s',
+                },
+                '&:hover': {
+                  transform: 'translateY(-8px) scale(1.02)',
+                  boxShadow: theme => theme.palette.mode === 'dark'
+                    ? '0 30px 60px rgba(0, 123, 255, 0.4), 0 0 30px rgba(255, 215, 0, 0.2)'
+                    : '0 30px 60px rgba(0, 123, 255, 0.3), 0 0 30px rgba(255, 215, 0, 0.15)',
+                  '&::before': {
+                    left: '100%',
+                  }
+                },
+              }}>
                 <CardContent sx={{ flexGrow: 1 }}>
                   <Box display="flex" alignItems="center" mb={2}>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>

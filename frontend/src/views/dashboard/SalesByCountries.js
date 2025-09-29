@@ -198,15 +198,47 @@ const SalesByCountries = () => {
 
   return (
     <Card sx={{
-      background: theme => theme.palette.mode === 'dark' ? 'linear-gradient(135deg, #1e1e2f 0%, #2c2c3e 100%)' : 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
-      borderRadius: '16px',
-      boxShadow: theme => theme.palette.mode === 'dark' ? '0 15px 35px rgba(0,0,0,0.7)' : '0 15px 35px rgba(0,0,0,0.1)',
-      border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(255,255,255,0.8)',
-      transition: 'all 0.3s ease',
+      background: theme => theme.palette.mode === 'dark'
+        ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
+        : 'linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 50%, #fff3e0 100%)',
+      borderRadius: '20px',
+      boxShadow: theme => theme.palette.mode === 'dark'
+        ? '0 20px 40px rgba(0, 123, 255, 0.3), 0 0 20px rgba(255, 215, 0, 0.1)'
+        : '0 20px 40px rgba(0, 123, 255, 0.2), 0 0 20px rgba(255, 215, 0, 0.1)',
+      border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,215,0,0.3)' : '1px solid rgba(0,123,255,0.2)',
+      transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+      animation: 'fadeInUp 0.6s ease-out',
+      position: 'relative',
+      overflow: 'hidden',
+      '&::before': {
+        content: '""',
+        position: 'absolute',
+        top: 0,
+        left: '-100%',
+        width: '100%',
+        height: '100%',
+        background: 'linear-gradient(90deg, transparent, rgba(255,215,0,0.3), transparent)',
+        transition: 'left 0.5s',
+      },
       '&:hover': {
-        transform: 'translateY(-4px)',
-        boxShadow: theme => theme.palette.mode === 'dark' ? '0 25px 50px rgba(0,0,0,0.9)' : '0 25px 50px rgba(0,0,0,0.15)'
-      }
+        transform: 'translateY(-8px) scale(1.02)',
+        boxShadow: theme => theme.palette.mode === 'dark'
+          ? '0 30px 60px rgba(0, 123, 255, 0.4), 0 0 30px rgba(255, 215, 0, 0.2)'
+          : '0 30px 60px rgba(0, 123, 255, 0.3), 0 0 30px rgba(255, 215, 0, 0.15)',
+        '&::before': {
+          left: '100%',
+        }
+      },
+      '@keyframes fadeInUp': {
+        '0%': {
+          opacity: 0,
+          transform: 'translateY(20px)',
+        },
+        '100%': {
+          opacity: 1,
+          transform: 'translateY(0)',
+        },
+      },
     }}>
       <CardHeader
         title='Active users By countries'
@@ -263,7 +295,15 @@ const SalesByCountries = () => {
               >
                 <Box sx={{ marginRight: 2, display: 'flex', flexDirection: 'column' }}>
                   <Box sx={{ display: 'flex' }}>
-                    <Typography sx={{ mr: 0.5, fontWeight: 600, letterSpacing: '0.25px', color: theme => theme.palette.mode === 'dark' ? '#ddd' : '#2c3e50' }}>{item.title}</Typography>
+                    <Typography sx={{
+                      mr: 0.5,
+                      fontWeight: 600,
+                      letterSpacing: '0.25px',
+                      color: theme => theme.palette.mode === 'dark' ? '#ddd' : '#2c3e50',
+                      transition: 'color 0.5s ease'
+                    }}>
+                      {item.title}
+                    </Typography>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                       {item.trend}
                       <Typography
@@ -271,7 +311,13 @@ const SalesByCountries = () => {
                         sx={{
                           fontWeight: 600,
                           lineHeight: 1.5,
-                          color: item.trendDir === 'down' ? 'error.main' : 'success.main'
+                          color: item.trendDir === 'down' ? 'error.main' : 'success.main',
+                          animation: item.trendDir === 'up' ? 'pulse 2s infinite' : 'none',
+                          '@keyframes pulse': {
+                            '0%': { opacity: 1 },
+                            '50%': { opacity: 0.7 },
+                            '100%': { opacity: 1 },
+                          },
                         }}
                       >
                         {item.trendNumber}
@@ -283,7 +329,14 @@ const SalesByCountries = () => {
                   </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', textAlign: 'end', flexDirection: 'column' }}>
-                  <Typography sx={{ fontWeight: 600, fontSize: '0.875rem', lineHeight: 1.72, letterSpacing: '0.22px', color: 'primary.main' }}>
+                  <Typography sx={{
+                    fontWeight: 600,
+                    fontSize: '0.875rem',
+                    lineHeight: 1.72,
+                    letterSpacing: '0.22px',
+                    color: 'primary.main',
+                    transition: 'color 0.5s ease'
+                  }}>
                     {item.sales}
                   </Typography>
                   <Typography variant='caption' sx={{ lineHeight: 1.5, color: 'text.secondary' }}>

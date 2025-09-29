@@ -194,6 +194,49 @@ const Dashboard = () => {
                   trendNumber='+42%'
                   title='Total Profit'
                   subtitle='earnings'
+                  sx={{
+                    background: theme => theme.palette.mode === 'dark'
+                      ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
+                      : 'linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 50%, #fff3e0 100%)',
+                    borderRadius: '16px',
+                    boxShadow: theme => theme.palette.mode === 'dark'
+                      ? '0 15px 35px rgba(0, 123, 255, 0.3), 0 0 15px rgba(255, 215, 0, 0.1)'
+                      : '0 15px 35px rgba(0, 123, 255, 0.2), 0 0 15px rgba(255, 215, 0, 0.1)',
+                    border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,215,0,0.3)' : '1px solid rgba(0,123,255,0.2)',
+                    transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                    animation: 'fadeInUp 0.6s ease-out',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      top: 0,
+                      left: '-100%',
+                      width: '100%',
+                      height: '100%',
+                      background: 'linear-gradient(90deg, transparent, rgba(255,215,0,0.3), transparent)',
+                      transition: 'left 0.5s',
+                    },
+                    '&:hover': {
+                      transform: 'translateY(-6px) scale(1.02)',
+                      boxShadow: theme => theme.palette.mode === 'dark'
+                        ? '0 25px 50px rgba(0, 123, 255, 0.4), 0 0 25px rgba(255, 215, 0, 0.2)'
+                        : '0 25px 50px rgba(0, 123, 255, 0.3), 0 0 25px rgba(255, 215, 0, 0.15)',
+                      '&::before': {
+                        left: '100%',
+                      }
+                    },
+                    '@keyframes fadeInUp': {
+                      '0%': {
+                        opacity: 0,
+                        transform: 'translateY(20px)',
+                      },
+                      '100%': {
+                        opacity: 1,
+                        transform: 'translateY(0)',
+                      },
+                    },
+                  }}
                 />
               </Grid>
               <Grid item xs={6}>
@@ -205,6 +248,49 @@ const Dashboard = () => {
                   trendNumber='-15%'
                   subtitle='Work Hard'
                   icon={<CurrencyUsd />}
+                  sx={{
+                    background: theme => theme.palette.mode === 'dark'
+                      ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
+                      : 'linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 50%, #fff3e0 100%)',
+                    borderRadius: '16px',
+                    boxShadow: theme => theme.palette.mode === 'dark'
+                      ? '0 15px 35px rgba(0, 123, 255, 0.3), 0 0 15px rgba(255, 215, 0, 0.1)'
+                      : '0 15px 35px rgba(0, 123, 255, 0.2), 0 0 15px rgba(255, 215, 0, 0.1)',
+                    border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,215,0,0.3)' : '1px solid rgba(0,123,255,0.2)',
+                    transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                    animation: 'fadeInUp 0.6s ease-out',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      top: 0,
+                      left: '-100%',
+                      width: '100%',
+                      height: '100%',
+                      background: 'linear-gradient(90deg, transparent, rgba(255,215,0,0.3), transparent)',
+                      transition: 'left 0.5s',
+                    },
+                    '&:hover': {
+                      transform: 'translateY(-6px) scale(1.02)',
+                      boxShadow: theme => theme.palette.mode === 'dark'
+                        ? '0 25px 50px rgba(0, 123, 255, 0.4), 0 0 25px rgba(255, 215, 0, 0.2)'
+                        : '0 25px 50px rgba(0, 123, 255, 0.3), 0 0 25px rgba(255, 215, 0, 0.15)',
+                      '&::before': {
+                        left: '100%',
+                      }
+                    },
+                    '@keyframes fadeInUp': {
+                      '0%': {
+                        opacity: 0,
+                        transform: 'translateY(20px)',
+                      },
+                      '100%': {
+                        opacity: 1,
+                        transform: 'translateY(0)',
+                      },
+                    },
+                  }}
                 />
               </Grid>
               <Grid item xs={6}>
@@ -215,6 +301,49 @@ const Dashboard = () => {
                   title='Referrals'
                   subtitle='Total Referrals'
                   icon={<AccountGroup />}
+                  sx={{
+                    background: theme => theme.palette.mode === 'dark'
+                      ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
+                      : 'linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 50%, #fff3e0 100%)',
+                    borderRadius: '16px',
+                    boxShadow: theme => theme.palette.mode === 'dark'
+                      ? '0 15px 35px rgba(0, 123, 255, 0.3), 0 0 15px rgba(255, 215, 0, 0.1)'
+                      : '0 15px 35px rgba(0, 123, 255, 0.2), 0 0 15px rgba(255, 215, 0, 0.1)',
+                    border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,215,0,0.3)' : '1px solid rgba(0,123,255,0.2)',
+                    transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                    animation: 'fadeInUp 0.6s ease-out',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      top: 0,
+                      left: '-100%',
+                      width: '100%',
+                      height: '100%',
+                      background: 'linear-gradient(90deg, transparent, rgba(255,215,0,0.3), transparent)',
+                      transition: 'left 0.5s',
+                    },
+                    '&:hover': {
+                      transform: 'translateY(-6px) scale(1.02)',
+                      boxShadow: theme => theme.palette.mode === 'dark'
+                        ? '0 25px 50px rgba(0, 123, 255, 0.4), 0 0 25px rgba(255, 215, 0, 0.2)'
+                        : '0 25px 50px rgba(0, 123, 255, 0.3), 0 0 25px rgba(255, 215, 0, 0.15)',
+                      '&::before': {
+                        left: '100%',
+                      }
+                    },
+                    '@keyframes fadeInUp': {
+                      '0%': {
+                        opacity: 0,
+                        transform: 'translateY(20px)',
+                      },
+                      '100%': {
+                        opacity: 1,
+                        transform: 'translateY(0)',
+                      },
+                    },
+                  }}
                 />
               </Grid>
               <Grid item xs={6}>
@@ -226,6 +355,49 @@ const Dashboard = () => {
                   subtitle='Completed Tasks'
                   title='Tasks Done'
                   icon={<BriefcaseVariantOutline />}
+                  sx={{
+                    background: theme => theme.palette.mode === 'dark'
+                      ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
+                      : 'linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 50%, #fff3e0 100%)',
+                    borderRadius: '16px',
+                    boxShadow: theme => theme.palette.mode === 'dark'
+                      ? '0 15px 35px rgba(0, 123, 255, 0.3), 0 0 15px rgba(255, 215, 0, 0.1)'
+                      : '0 15px 35px rgba(0, 123, 255, 0.2), 0 0 15px rgba(255, 215, 0, 0.1)',
+                    border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,215,0,0.3)' : '1px solid rgba(0,123,255,0.2)',
+                    transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                    animation: 'fadeInUp 0.6s ease-out',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      top: 0,
+                      left: '-100%',
+                      width: '100%',
+                      height: '100%',
+                      background: 'linear-gradient(90deg, transparent, rgba(255,215,0,0.3), transparent)',
+                      transition: 'left 0.5s',
+                    },
+                    '&:hover': {
+                      transform: 'translateY(-6px) scale(1.02)',
+                      boxShadow: theme => theme.palette.mode === 'dark'
+                        ? '0 25px 50px rgba(0, 123, 255, 0.4), 0 0 25px rgba(255, 215, 0, 0.2)'
+                        : '0 25px 50px rgba(0, 123, 255, 0.3), 0 0 25px rgba(255, 215, 0, 0.15)',
+                      '&::before': {
+                        left: '100%',
+                      }
+                    },
+                    '@keyframes fadeInUp': {
+                      '0%': {
+                        opacity: 0,
+                        transform: 'translateY(20px)',
+                      },
+                      '100%': {
+                        opacity: 1,
+                        transform: 'translateY(0)',
+                      },
+                    },
+                  }}
                 />
               </Grid>
               <Grid item xs={6}>
@@ -235,6 +407,49 @@ const Dashboard = () => {
                   title='Left Leg'
                   subtitle='Binary Tree'
                   icon={<Tree />}
+                  sx={{
+                    background: theme => theme.palette.mode === 'dark'
+                      ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
+                      : 'linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 50%, #fff3e0 100%)',
+                    borderRadius: '16px',
+                    boxShadow: theme => theme.palette.mode === 'dark'
+                      ? '0 15px 35px rgba(0, 123, 255, 0.3), 0 0 15px rgba(255, 215, 0, 0.1)'
+                      : '0 15px 35px rgba(0, 123, 255, 0.2), 0 0 15px rgba(255, 215, 0, 0.1)',
+                    border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,215,0,0.3)' : '1px solid rgba(0,123,255,0.2)',
+                    transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                    animation: 'fadeInUp 0.6s ease-out',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      top: 0,
+                      left: '-100%',
+                      width: '100%',
+                      height: '100%',
+                      background: 'linear-gradient(90deg, transparent, rgba(255,215,0,0.3), transparent)',
+                      transition: 'left 0.5s',
+                    },
+                    '&:hover': {
+                      transform: 'translateY(-6px) scale(1.02)',
+                      boxShadow: theme => theme.palette.mode === 'dark'
+                        ? '0 25px 50px rgba(0, 123, 255, 0.4), 0 0 25px rgba(255, 215, 0, 0.2)'
+                        : '0 25px 50px rgba(0, 123, 255, 0.3), 0 0 25px rgba(255, 215, 0, 0.15)',
+                      '&::before': {
+                        left: '100%',
+                      }
+                    },
+                    '@keyframes fadeInUp': {
+                      '0%': {
+                        opacity: 0,
+                        transform: 'translateY(20px)',
+                      },
+                      '100%': {
+                        opacity: 1,
+                        transform: 'translateY(0)',
+                      },
+                    },
+                  }}
                 />
               </Grid>
               <Grid item xs={6}>
@@ -244,6 +459,49 @@ const Dashboard = () => {
                   title='Right Leg'
                   subtitle='Binary Tree'
                   icon={<Tree />}
+                  sx={{
+                    background: theme => theme.palette.mode === 'dark'
+                      ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
+                      : 'linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 50%, #fff3e0 100%)',
+                    borderRadius: '16px',
+                    boxShadow: theme => theme.palette.mode === 'dark'
+                      ? '0 15px 35px rgba(0, 123, 255, 0.3), 0 0 15px rgba(255, 215, 0, 0.1)'
+                      : '0 15px 35px rgba(0, 123, 255, 0.2), 0 0 15px rgba(255, 215, 0, 0.1)',
+                    border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,215,0,0.3)' : '1px solid rgba(0,123,255,0.2)',
+                    transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                    animation: 'fadeInUp 0.6s ease-out',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      top: 0,
+                      left: '-100%',
+                      width: '100%',
+                      height: '100%',
+                      background: 'linear-gradient(90deg, transparent, rgba(255,215,0,0.3), transparent)',
+                      transition: 'left 0.5s',
+                    },
+                    '&:hover': {
+                      transform: 'translateY(-6px) scale(1.02)',
+                      boxShadow: theme => theme.palette.mode === 'dark'
+                        ? '0 25px 50px rgba(0, 123, 255, 0.4), 0 0 25px rgba(255, 215, 0, 0.2)'
+                        : '0 25px 50px rgba(0, 123, 255, 0.3), 0 0 25px rgba(255, 215, 0, 0.15)',
+                      '&::before': {
+                        left: '100%',
+                      }
+                    },
+                    '@keyframes fadeInUp': {
+                      '0%': {
+                        opacity: 0,
+                        transform: 'translateY(20px)',
+                      },
+                      '100%': {
+                        opacity: 1,
+                        transform: 'translateY(0)',
+                      },
+                    },
+                  }}
                 />
               </Grid>
             </Grid>

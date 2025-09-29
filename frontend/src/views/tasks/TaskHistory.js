@@ -171,8 +171,42 @@ const TaskHistory = ({ showEarnings = false }) => {
         {/* Earnings Stats Cards */}
         <Grid container spacing={4} sx={{ mb: 4 }}>
           <Grid item xs={12} sm={6} md={3}>
-            <Card>
-              <CardContent>
+            <Card sx={{
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              background: theme => theme.palette.mode === 'dark'
+                ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
+                : 'linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 50%, #fff3e0 100%)',
+              borderRadius: '20px',
+              boxShadow: theme => theme.palette.mode === 'dark'
+                ? '0 20px 40px rgba(0, 123, 255, 0.3), 0 0 20px rgba(255, 215, 0, 0.1)'
+                : '0 20px 40px rgba(0, 123, 255, 0.2), 0 0 20px rgba(255, 215, 0, 0.1)',
+              border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,215,0,0.3)' : '1px solid rgba(0,123,255,0.2)',
+              transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+              position: 'relative',
+              overflow: 'hidden',
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: 0,
+                left: '-100%',
+                width: '100%',
+                height: '100%',
+                background: 'linear-gradient(90deg, transparent, rgba(255,215,0,0.3), transparent)',
+                transition: 'left 0.5s',
+              },
+              '&:hover': {
+                transform: 'translateY(-8px) scale(1.02)',
+                boxShadow: theme => theme.palette.mode === 'dark'
+                  ? '0 30px 60px rgba(0, 123, 255, 0.4), 0 0 30px rgba(255, 215, 0, 0.2)'
+                  : '0 30px 60px rgba(0, 123, 255, 0.3), 0 0 30px rgba(255, 215, 0, 0.15)',
+                '&::before': {
+                  left: '100%',
+                }
+              },
+            }}>
+              <CardContent sx={{ flexGrow: 1 }}>
                 <Box display="flex" alignItems="center">
                   <CheckCircleOutline color="success" sx={{ mr: 1 }} />
                   <Typography variant="h6">
@@ -187,8 +221,42 @@ const TaskHistory = ({ showEarnings = false }) => {
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <Card>
-              <CardContent>
+            <Card sx={{
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              background: theme => theme.palette.mode === 'dark'
+                ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
+                : 'linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 50%, #fff3e0 100%)',
+              borderRadius: '20px',
+              boxShadow: theme => theme.palette.mode === 'dark'
+                ? '0 20px 40px rgba(0, 123, 255, 0.3), 0 0 20px rgba(255, 215, 0, 0.1)'
+                : '0 20px 40px rgba(0, 123, 255, 0.2), 0 0 20px rgba(255, 215, 0, 0.1)',
+              border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,215,0,0.3)' : '1px solid rgba(0,123,255,0.2)',
+              transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+              position: 'relative',
+              overflow: 'hidden',
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: 0,
+                left: '-100%',
+                width: '100%',
+                height: '100%',
+                background: 'linear-gradient(90deg, transparent, rgba(255,215,0,0.3), transparent)',
+                transition: 'left 0.5s',
+              },
+              '&:hover': {
+                transform: 'translateY(-8px) scale(1.02)',
+                boxShadow: theme => theme.palette.mode === 'dark'
+                  ? '0 30px 60px rgba(0, 123, 255, 0.4), 0 0 30px rgba(255, 215, 0, 0.2)'
+                  : '0 30px 60px rgba(0, 123, 255, 0.3), 0 0 30px rgba(255, 215, 0, 0.15)',
+                '&::before': {
+                  left: '100%',
+                }
+              },
+            }}>
+              <CardContent sx={{ flexGrow: 1 }}>
                 <Box display="flex" alignItems="center">
                   <CurrencyUsd color="primary" sx={{ mr: 1 }} />
                   <Typography variant="h6">
@@ -203,8 +271,42 @@ const TaskHistory = ({ showEarnings = false }) => {
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <Card>
-              <CardContent>
+            <Card sx={{
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              background: theme => theme.palette.mode === 'dark'
+                ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
+                : 'linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 50%, #fff3e0 100%)',
+              borderRadius: '20px',
+              boxShadow: theme => theme.palette.mode === 'dark'
+                ? '0 20px 40px rgba(0, 123, 255, 0.3), 0 0 20px rgba(255, 215, 0, 0.1)'
+                : '0 20px 40px rgba(0, 123, 255, 0.2), 0 0 20px rgba(255, 215, 0, 0.1)',
+              border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,215,0,0.3)' : '1px solid rgba(0,123,255,0.2)',
+              transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+              position: 'relative',
+              overflow: 'hidden',
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: 0,
+                left: '-100%',
+                width: '100%',
+                height: '100%',
+                background: 'linear-gradient(90deg, transparent, rgba(255,215,0,0.3), transparent)',
+                transition: 'left 0.5s',
+              },
+              '&:hover': {
+                transform: 'translateY(-8px) scale(1.02)',
+                boxShadow: theme => theme.palette.mode === 'dark'
+                  ? '0 30px 60px rgba(0, 123, 255, 0.4), 0 0 30px rgba(255, 215, 0, 0.2)'
+                  : '0 30px 60px rgba(0, 123, 255, 0.3), 0 0 30px rgba(255, 215, 0, 0.15)',
+                '&::before': {
+                  left: '100%',
+                }
+              },
+            }}>
+              <CardContent sx={{ flexGrow: 1 }}>
                 <Box display="flex" alignItems="center">
                   <Calendar color="warning" sx={{ mr: 1 }} />
                   <Typography variant="h6">
@@ -219,8 +321,42 @@ const TaskHistory = ({ showEarnings = false }) => {
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <Card>
-              <CardContent>
+            <Card sx={{
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              background: theme => theme.palette.mode === 'dark'
+                ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
+                : 'linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 50%, #fff3e0 100%)',
+              borderRadius: '20px',
+              boxShadow: theme => theme.palette.mode === 'dark'
+                ? '0 20px 40px rgba(0, 123, 255, 0.3), 0 0 20px rgba(255, 215, 0, 0.1)'
+                : '0 20px 40px rgba(0, 123, 255, 0.2), 0 0 20px rgba(255, 215, 0, 0.1)',
+              border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,215,0,0.3)' : '1px solid rgba(0,123,255,0.2)',
+              transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+              position: 'relative',
+              overflow: 'hidden',
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: 0,
+                left: '-100%',
+                width: '100%',
+                height: '100%',
+                background: 'linear-gradient(90deg, transparent, rgba(255,215,0,0.3), transparent)',
+                transition: 'left 0.5s',
+              },
+              '&:hover': {
+                transform: 'translateY(-8px) scale(1.02)',
+                boxShadow: theme => theme.palette.mode === 'dark'
+                  ? '0 30px 60px rgba(0, 123, 255, 0.4), 0 0 30px rgba(255, 215, 0, 0.2)'
+                  : '0 30px 60px rgba(0, 123, 255, 0.3), 0 0 30px rgba(255, 215, 0, 0.15)',
+                '&::before': {
+                  left: '100%',
+                }
+              },
+            }}>
+              <CardContent sx={{ flexGrow: 1 }}>
                 <Box display="flex" alignItems="center">
                   <TrendingUp color="secondary" sx={{ mr: 1 }} />
                   <Typography variant="h6">
@@ -236,7 +372,38 @@ const TaskHistory = ({ showEarnings = false }) => {
         </Grid>
 
         {/* Recent Task Completions */}
-        <Card>
+        <Card sx={{
+          background: theme => theme.palette.mode === 'dark'
+            ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
+            : 'linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 50%, #fff3e0 100%)',
+          borderRadius: '20px',
+          boxShadow: theme => theme.palette.mode === 'dark'
+            ? '0 20px 40px rgba(0, 123, 255, 0.3), 0 0 20px rgba(255, 215, 0, 0.1)'
+            : '0 20px 40px rgba(0, 123, 255, 0.2), 0 0 20px rgba(255, 215, 0, 0.1)',
+          border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,215,0,0.3)' : '1px solid rgba(0,123,255,0.2)',
+          transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+          position: 'relative',
+          overflow: 'hidden',
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: '-100%',
+            width: '100%',
+            height: '100%',
+            background: 'linear-gradient(90deg, transparent, rgba(255,215,0,0.3), transparent)',
+            transition: 'left 0.5s',
+          },
+          '&:hover': {
+            transform: 'translateY(-8px) scale(1.02)',
+            boxShadow: theme => theme.palette.mode === 'dark'
+              ? '0 30px 60px rgba(0, 123, 255, 0.4), 0 0 30px rgba(255, 215, 0, 0.2)'
+              : '0 30px 60px rgba(0, 123, 255, 0.3), 0 0 30px rgba(255, 215, 0, 0.15)',
+            '&::before': {
+              left: '100%',
+            }
+          },
+        }}>
           <CardContent>
             <Typography variant="h6" gutterBottom>
               Recent Task Completions
@@ -246,10 +413,10 @@ const TaskHistory = ({ showEarnings = false }) => {
                 No task completions yet. Complete some tasks to see your earnings!
               </Typography>
             ) : (
-              <TableContainer component={Paper}>
+              <TableContainer component={Paper} sx={{ mt: 2 }}>
                 <Table>
                   <TableHead>
-                    <TableRow>
+                    <TableRow sx={{ background: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.04)' }}>
                       <TableCell>Task Type</TableCell>
                       <TableCell>Title</TableCell>
                       <TableCell>Reward</TableCell>
@@ -258,7 +425,11 @@ const TaskHistory = ({ showEarnings = false }) => {
                   </TableHead>
                   <TableBody>
                     {taskCompletions.slice(0, 10).map((completion, index) => (
-                      <TableRow key={index}>
+                      <TableRow key={index} sx={{
+                        '&:hover': {
+                          backgroundColor: theme => theme.palette.mode === 'dark' ? 'rgba(255,215,0,0.1)' : 'rgba(0,123,255,0.05)',
+                        }
+                      }}>
                         <TableCell>
                           <Chip
                             icon={getTaskTypeIcon(completion.type)}
@@ -296,8 +467,42 @@ const TaskHistory = ({ showEarnings = false }) => {
         <Grid container spacing={3}>
           {taskCompletions.map((completion, index) => (
             <Grid item xs={12} md={6} key={index}>
-              <Card>
-                <CardContent>
+              <Card sx={{
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                background: theme => theme.palette.mode === 'dark'
+                  ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
+                  : 'linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 50%, #fff3e0 100%)',
+                borderRadius: '20px',
+                boxShadow: theme => theme.palette.mode === 'dark'
+                  ? '0 20px 40px rgba(0, 123, 255, 0.3), 0 0 20px rgba(255, 215, 0, 0.1)'
+                  : '0 20px 40px rgba(0, 123, 255, 0.2), 0 0 20px rgba(255, 215, 0, 0.1)',
+                border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,215,0,0.3)' : '1px solid rgba(0,123,255,0.2)',
+                transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                position: 'relative',
+                overflow: 'hidden',
+                '&::before': {
+                  content: '""',
+                  position: 'absolute',
+                  top: 0,
+                  left: '-100%',
+                  width: '100%',
+                  height: '100%',
+                  background: 'linear-gradient(90deg, transparent, rgba(255,215,0,0.3), transparent)',
+                  transition: 'left 0.5s',
+                },
+                '&:hover': {
+                  transform: 'translateY(-8px) scale(1.02)',
+                  boxShadow: theme => theme.palette.mode === 'dark'
+                    ? '0 30px 60px rgba(0, 123, 255, 0.4), 0 0 30px rgba(255, 215, 0, 0.2)'
+                    : '0 30px 60px rgba(0, 123, 255, 0.3), 0 0 30px rgba(255, 215, 0, 0.15)',
+                  '&::before': {
+                    left: '100%',
+                  }
+                },
+              }}>
+                <CardContent sx={{ flexGrow: 1 }}>
                   <Box display="flex" alignItems="center" mb={2}>
                     <History color="action" sx={{ mr: 1 }} />
                     <Typography variant="h6">
