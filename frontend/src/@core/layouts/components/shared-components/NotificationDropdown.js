@@ -35,18 +35,48 @@ const Menu = styled(MuiMenu)(({ theme }) => ({
     width: 380,
     overflow: 'hidden',
     marginTop: theme.spacing(4),
-    background: theme.palette.mode === 'dark' ? 'linear-gradient(135deg, #1e1e2f 0%, #2c2c3e 100%)' : 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
-    borderRadius: '16px',
-    boxShadow: theme.palette.mode === 'dark' ? '0 25px 50px rgba(0,0,0,0.7)' : '0 25px 50px rgba(0,0,0,0.15)',
-    border: theme.palette.mode === 'dark' ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(255,255,255,0.8)',
-    backdropFilter: 'blur(20px)',
+    background: theme.palette.mode === 'dark'
+      ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
+      : 'linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 50%, #fff3e0 100%)',
+    borderRadius: '20px',
+    boxShadow: theme.palette.mode === 'dark'
+      ? '0 30px 60px rgba(0, 123, 255, 0.4), 0 0 30px rgba(255, 215, 0, 0.2)'
+      : '0 30px 60px rgba(0, 123, 255, 0.3), 0 0 30px rgba(255, 215, 0, 0.15)',
+    border: theme.palette.mode === 'dark' ? '1px solid rgba(255,215,0,0.3)' : '1px solid rgba(0,123,255,0.2)',
+    backdropFilter: 'blur(25px)',
+    animation: 'fadeInScale 0.3s ease-out',
+    position: 'relative',
+    '&::before': {
+      content: '""',
+      position: 'absolute',
+      top: 0,
+      left: '-100%',
+      width: '100%',
+      height: '100%',
+      background: 'linear-gradient(90deg, transparent, rgba(255,215,0,0.2), transparent)',
+      transition: 'left 0.5s',
+      pointerEvents: 'none',
+    },
+    '&:hover::before': {
+      left: '100%',
+    },
     [theme.breakpoints.down('sm')]: {
       width: '100%'
     }
   },
   '& .MuiMenu-list': {
     padding: 0
-  }
+  },
+  '@keyframes fadeInScale': {
+    '0%': {
+      opacity: 0,
+      transform: 'scale(0.95) translateY(-10px)',
+    },
+    '100%': {
+      opacity: 1,
+      transform: 'scale(1) translateY(0)',
+    },
+  },
 }))
 
 // ** Styled MenuItem component
@@ -54,10 +84,30 @@ const MenuItem = styled(MuiMenuItem)(({ theme }) => ({
   paddingTop: theme.spacing(3),
   paddingBottom: theme.spacing(3),
   borderBottom: theme.palette.mode === 'dark' ? `1px solid rgba(255,255,255,0.1)` : `1px solid rgba(255,255,255,0.3)`,
-  transition: 'all 0.3s ease',
+  transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+  position: 'relative',
+  overflow: 'hidden',
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    width: '4px',
+    height: '100%',
+    background: 'linear-gradient(135deg, #007bff 0%, #00d4ff 100%)',
+    transform: 'scaleY(0)',
+    transition: 'transform 0.3s ease',
+    borderRadius: '0 4px 4px 0',
+  },
   '&:hover': {
-    background: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.1)',
-    backdropFilter: 'blur(10px)'
+    background: theme.palette.mode === 'dark'
+      ? 'linear-gradient(135deg, rgba(0,123,255,0.1) 0%, rgba(0,212,255,0.05) 100%)'
+      : 'linear-gradient(135deg, rgba(0,123,255,0.05) 0%, rgba(0,212,255,0.02) 100%)',
+    backdropFilter: 'blur(15px)',
+    transform: 'translateX(8px)',
+    '&::before': {
+      transform: 'scaleY(1)',
+    }
   }
 }))
 
@@ -218,16 +268,89 @@ const NotificationDropdown = () => {
 
   // Get notification icon based on type
   const getNotificationIcon = (type) => {
+    const iconStyle = {
+      fontSize: '1.5rem',
+      transition: 'all 0.3s ease',
+      filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
+      '&:hover': {
+        transform: 'scale(1.1) rotate(5deg)',
+      }
+    }
+
     switch (type) {
       case 'reward':
       case 'payment':
-        return <Gift sx={{ color: 'success.main' }} />
+        return (
+          <Box sx={{
+            background: 'linear-gradient(135deg, #4CAF50 0%, #81C784 100%)',
+            borderRadius: '50%',
+            width: 40,
+            height: 40,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 4px 15px rgba(76, 175, 80, 0.3)',
+            animation: 'pulse 2s infinite',
+            '@keyframes pulse': {
+              '0%': { boxShadow: '0 4px 15px rgba(76, 175, 80, 0.3)' },
+              '50%': { boxShadow: '0 4px 25px rgba(76, 175, 80, 0.6)' },
+              '100%': { boxShadow: '0 4px 15px rgba(76, 175, 80, 0.3)' },
+            }
+          }}>
+            <Gift sx={{ color: 'white', fontSize: '1.2rem' }} />
+          </Box>
+        )
       case 'system':
-        return <Information sx={{ color: 'info.main' }} />
+        return (
+          <Box sx={{
+            background: 'linear-gradient(135deg, #2196F3 0%, #64B5F6 100%)',
+            borderRadius: '50%',
+            width: 40,
+            height: 40,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 4px 15px rgba(33, 150, 243, 0.3)',
+          }}>
+            <Information sx={{ color: 'white', fontSize: '1.2rem' }} />
+          </Box>
+        )
       case 'alert':
-        return <AlertCircle sx={{ color: 'warning.main' }} />
+        return (
+          <Box sx={{
+            background: 'linear-gradient(135deg, #FF9800 0%, #FFB74D 100%)',
+            borderRadius: '50%',
+            width: 40,
+            height: 40,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 4px 15px rgba(255, 152, 0, 0.3)',
+            animation: 'shake 1s infinite',
+            '@keyframes shake': {
+              '0%, 100%': { transform: 'translateX(0)' },
+              '25%': { transform: 'translateX(-2px)' },
+              '75%': { transform: 'translateX(2px)' },
+            }
+          }}>
+            <AlertCircle sx={{ color: 'white', fontSize: '1.2rem' }} />
+          </Box>
+        )
       default:
-        return <CheckCircle sx={{ color: 'primary.main' }} />
+        return (
+          <Box sx={{
+            background: 'linear-gradient(135deg, #9C27B0 0%, #BA68C8 100%)',
+            borderRadius: '50%',
+            width: 40,
+            height: 40,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 4px 15px rgba(156, 39, 176, 0.3)',
+          }}>
+            <CheckCircle sx={{ color: 'white', fontSize: '1.2rem' }} />
+          </Box>
+        )
     }
   }
 

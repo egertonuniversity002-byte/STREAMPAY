@@ -155,13 +155,55 @@ const PaymentDashboard = ({ user, activeTab, setActiveTab }) => {
     <Grid container spacing={6}>
       {/* Wallet Balance Card */}
       <Grid item xs={12} md={6} lg={4}>
-        <Card>
+        <Card sx={{
+          background: theme => theme.palette.mode === 'dark'
+            ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
+            : 'linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 50%, #fff3e0 100%)',
+          borderRadius: '20px',
+          boxShadow: theme => theme.palette.mode === 'dark'
+            ? '0 20px 40px rgba(0, 123, 255, 0.3), 0 0 20px rgba(255, 215, 0, 0.1)'
+            : '0 20px 40px rgba(0, 123, 255, 0.2), 0 0 20px rgba(255, 215, 0, 0.1)',
+          border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,215,0,0.3)' : '1px solid rgba(0,123,255,0.2)',
+          transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+          animation: 'fadeInUp 0.6s ease-out',
+          position: 'relative',
+          overflow: 'hidden',
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: '-100%',
+            width: '100%',
+            height: '100%',
+            background: 'linear-gradient(90deg, transparent, rgba(0,123,255,0.2), transparent)',
+            transition: 'left 0.5s',
+          },
+          '&:hover': {
+            transform: 'translateY(-8px) scale(1.02)',
+            boxShadow: theme => theme.palette.mode === 'dark'
+              ? '0 30px 60px rgba(0, 123, 255, 0.4), 0 0 30px rgba(255, 215, 0, 0.2)'
+              : '0 30px 60px rgba(0, 123, 255, 0.3), 0 0 30px rgba(255, 215, 0, 0.15)',
+            '&::before': {
+              left: '100%',
+            }
+          },
+          '@keyframes fadeInUp': {
+            '0%': {
+              opacity: 0,
+              transform: 'translateY(20px)',
+            },
+            '100%': {
+              opacity: 1,
+              transform: 'translateY(0)',
+            },
+          },
+        }}>
           <CardContent>
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-              <WalletOutline sx={{ mr: 2, color: 'primary.main' }} />
-              <Typography variant='h6'>Wallet Balance</Typography>
+              <WalletOutline sx={{ mr: 2, color: 'primary.main', fontSize: '2rem' }} />
+              <Typography variant='h6' sx={{ fontWeight: 'bold' }}>Wallet Balance</Typography>
             </Box>
-            <Typography variant='h4' sx={{ mb: 1 }}>
+            <Typography variant='h4' sx={{ mb: 1, fontWeight: 'bold', color: theme => theme.palette.mode === 'dark' ? '#00d4ff' : '#007bff' }}>
               {formatCurrency(stats?.user?.wallet_balance || user?.wallet_balance || 0, stats?.currency || 'TZS')}
             </Typography>
             <Typography variant='body2' color='text.secondary'>
@@ -173,13 +215,45 @@ const PaymentDashboard = ({ user, activeTab, setActiveTab }) => {
 
       {/* Total Earnings Card */}
       <Grid item xs={12} md={6} lg={4}>
-        <Card>
+        <Card sx={{
+          background: theme => theme.palette.mode === 'dark'
+            ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
+            : 'linear-gradient(135deg, #e8f5e8 0%, #f3e5f5 50%, #fff3e0 100%)',
+          borderRadius: '20px',
+          boxShadow: theme => theme.palette.mode === 'dark'
+            ? '0 20px 40px rgba(34, 197, 94, 0.3), 0 0 20px rgba(255, 215, 0, 0.1)'
+            : '0 20px 40px rgba(34, 197, 94, 0.2), 0 0 20px rgba(255, 215, 0, 0.1)',
+          border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(34,197,94,0.3)' : '1px solid rgba(34,197,94,0.2)',
+          transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+          animation: 'fadeInUp 0.7s ease-out',
+          position: 'relative',
+          overflow: 'hidden',
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: '-100%',
+            width: '100%',
+            height: '100%',
+            background: 'linear-gradient(90deg, transparent, rgba(34,197,94,0.2), transparent)',
+            transition: 'left 0.5s',
+          },
+          '&:hover': {
+            transform: 'translateY(-8px) scale(1.02)',
+            boxShadow: theme => theme.palette.mode === 'dark'
+              ? '0 30px 60px rgba(34, 197, 94, 0.4), 0 0 30px rgba(255, 215, 0, 0.2)'
+              : '0 30px 60px rgba(34, 197, 94, 0.3), 0 0 30px rgba(255, 215, 0, 0.15)',
+            '&::before': {
+              left: '100%',
+            }
+          },
+        }}>
           <CardContent>
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-              <TrendingUp sx={{ mr: 2, color: 'success.main' }} />
-              <Typography variant='h6'>Total Earnings</Typography>
+              <TrendingUp sx={{ mr: 2, color: 'success.main', fontSize: '2rem' }} />
+              <Typography variant='h6' sx={{ fontWeight: 'bold' }}>Total Earnings</Typography>
             </Box>
-            <Typography variant='h4' sx={{ mb: 1 }}>
+            <Typography variant='h4' sx={{ mb: 1, fontWeight: 'bold', color: theme => theme.palette.mode === 'dark' ? '#22c55e' : '#22c55e' }}>
               {formatCurrency(stats?.user?.total_earned || user?.total_earned || 0, stats?.currency || 'TZS')}
             </Typography>
             <Typography variant='body2' color='text.secondary'>
@@ -192,15 +266,62 @@ const PaymentDashboard = ({ user, activeTab, setActiveTab }) => {
       {/* Activation Status Card */}
       <Grid item xs={12}>
         <Card sx={{
-          bgcolor: !(stats?.user?.is_activated || user?.is_activated) ? 'warning.light' : 'success.light',
-          border: '2px solid',
-          borderColor: !(stats?.user?.is_activated || user?.is_activated) ? 'warning.main' : 'success.main'
+          background: theme => !(stats?.user?.is_activated || user?.is_activated)
+            ? (theme.palette.mode === 'dark'
+                ? 'linear-gradient(135deg, #2d1b1b 0%, #3d2b1f 50%, #4d3b2f 100%)'
+                : 'linear-gradient(135deg, #fff3cd 0%, #ffeaa7 50%, #ffd54f 100%)')
+            : (theme.palette.mode === 'dark'
+                ? 'linear-gradient(135deg, #1b2d1b 0%, #2f3d1f 50%, #3f4d2f 100%)'
+                : 'linear-gradient(135deg, #d4edda 0%, #c3e6cb 50%, #a8d5ba 100%)'),
+          borderRadius: '20px',
+          boxShadow: theme => !(stats?.user?.is_activated || user?.is_activated)
+            ? (theme.palette.mode === 'dark'
+                ? '0 20px 40px rgba(255, 193, 7, 0.3), 0 0 20px rgba(255, 215, 0, 0.1)'
+                : '0 20px 40px rgba(255, 193, 7, 0.2), 0 0 20px rgba(255, 215, 0, 0.1)')
+            : (theme.palette.mode === 'dark'
+                ? '0 20px 40px rgba(40, 167, 69, 0.3), 0 0 20px rgba(255, 215, 0, 0.1)'
+                : '0 20px 40px rgba(40, 167, 69, 0.2), 0 0 20px rgba(255, 215, 0, 0.1)'),
+          border: theme => !(stats?.user?.is_activated || user?.is_activated)
+            ? (theme.palette.mode === 'dark' ? '1px solid rgba(255,193,7,0.3)' : '1px solid rgba(255,193,7,0.2)')
+            : (theme.palette.mode === 'dark' ? '1px solid rgba(40,167,69,0.3)' : '1px solid rgba(40,167,69,0.2)'),
+          transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+          animation: 'fadeInUp 0.8s ease-out',
+          position: 'relative',
+          overflow: 'hidden',
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: '-100%',
+            width: '100%',
+            height: '100%',
+            background: `linear-gradient(90deg, transparent, ${!(stats?.user?.is_activated || user?.is_activated) ? 'rgba(255,193,7,0.2)' : 'rgba(40,167,69,0.2)'}, transparent)`,
+            transition: 'left 0.5s',
+          },
+          '&:hover': {
+            transform: 'translateY(-8px) scale(1.02)',
+            boxShadow: theme => !(stats?.user?.is_activated || user?.is_activated)
+              ? (theme.palette.mode === 'dark'
+                  ? '0 30px 60px rgba(255, 193, 7, 0.4), 0 0 30px rgba(255, 215, 0, 0.2)'
+                  : '0 30px 60px rgba(255, 193, 7, 0.3), 0 0 30px rgba(255, 215, 0, 0.15)')
+              : (theme.palette.mode === 'dark'
+                  ? '0 30px 60px rgba(40, 167, 69, 0.4), 0 0 30px rgba(255, 215, 0, 0.2)'
+                  : '0 30px 60px rgba(40, 167, 69, 0.3), 0 0 30px rgba(255, 215, 0, 0.15)'),
+            '&::before': {
+              left: '100%',
+            }
+          },
         }}>
           <CardContent>
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-              <AccountOutline sx={{ mr: 2, fontSize: 40, color: (stats?.user?.is_activated || user?.is_activated) ? 'success.main' : 'warning.main' }} />
+              <AccountOutline sx={{
+                mr: 2,
+                fontSize: 40,
+                color: (stats?.user?.is_activated || user?.is_activated) ? 'success.main' : 'warning.main',
+                filter: 'drop-shadow(0 0 10px rgba(0,0,0,0.3))'
+              }} />
               <Box>
-                <Typography variant='h5' sx={{ fontWeight: 'bold' }}>
+                <Typography variant='h5' sx={{ fontWeight: 'bold', color: theme => theme.palette.mode === 'dark' ? '#ddd' : '#2c3e50' }}>
                   {(stats?.user?.is_activated || user?.is_activated) ? 'Account Activated' : 'Account Not Activated'}
                 </Typography>
                 <Typography variant='body1' color='text.secondary'>
@@ -213,8 +334,15 @@ const PaymentDashboard = ({ user, activeTab, setActiveTab }) => {
             </Box>
 
             {!(stats?.user?.is_activated || user?.is_activated) && (
-              <Box sx={{ bgcolor: 'warning.dark', p: 3, borderRadius: 2, mb: 3 }}>
-                <Typography variant='h6' sx={{ color: 'warning.contrastText', mb: 2 }}>
+              <Box sx={{
+                bgcolor: 'warning.dark',
+                p: 3,
+                borderRadius: 2,
+                mb: 3,
+                border: '1px solid rgba(255,193,7,0.3)',
+                boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.1)'
+              }}>
+                <Typography variant='h6' sx={{ color: 'warning.contrastText', mb: 2, fontWeight: 'bold' }}>
                   🚀 Activate Your Account
                 </Typography>
                 <Typography variant='body1' sx={{ color: 'warning.contrastText', mb: 2 }}>
@@ -233,6 +361,14 @@ const PaymentDashboard = ({ user, activeTab, setActiveTab }) => {
                 color={(stats?.user?.is_activated || user?.is_activated) ? 'success' : 'warning'}
                 variant='filled'
                 size='large'
+                sx={{
+                  fontWeight: 'bold',
+                  boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
+                  '&:hover': {
+                    transform: 'scale(1.05)',
+                    transition: 'all 0.2s ease'
+                  }
+                }}
               />
               {!(stats?.user?.is_activated || user?.is_activated) && (
                 <Button
@@ -240,7 +376,18 @@ const PaymentDashboard = ({ user, activeTab, setActiveTab }) => {
                   color='warning'
                   size='large'
                   onClick={() => setActiveTab && setActiveTab('deposit')}
-                  sx={{ fontWeight: 'bold' }}
+                  sx={{
+                    fontWeight: 'bold',
+                    boxShadow: '0 4px 15px rgba(255,193,7,0.4)',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      transform: 'translateY(-2px) scale(1.02)',
+                      boxShadow: '0 6px 20px rgba(255,193,7,0.6)'
+                    },
+                    '&:active': {
+                      transform: 'translateY(0) scale(0.98)'
+                    }
+                  }}
                 >
                   Make Deposit to Activate
                 </Button>
