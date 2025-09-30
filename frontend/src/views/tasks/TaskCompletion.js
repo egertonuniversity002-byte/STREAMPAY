@@ -141,7 +141,7 @@ const TaskCompletion = () => {
     // Initialize completion data based on task type
     const initialData = {}
     if (task.type === 'survey') {
-      initialData.answers = [-1] // One question, not answered yet
+      initialData.answers = [] // No questions, so no answers
     }
     setCompletionData(initialData)
     setShowCompletionDialog(true)
@@ -685,14 +685,8 @@ const TaskCompletion = () => {
     switch (taskType) {
       case 'survey':
         const answers = data.answers || []
-        if (answers.length === 0) {
-          return 'Please provide answers to all survey questions'
-        }
-        if (answers.length !== 1) { // We generate 1 quiz question
-          return 'Please answer the quiz question'
-        }
-        if (answers.some(answer => answer === -1)) {
-          return 'Please select an answer for all questions'
+        if (answers.length !== 0) {
+          return 'Survey does not require answers'
         }
         break
 
