@@ -237,7 +237,7 @@ const TotalEarning = () => {
               '100%': { textShadow: '0 0 15px rgba(25, 118, 210, 0.8)' },
             },
           }}>
-            {data.currency || 'KES'} {data.user.wallet_balance || 0}
+            {data.currency || 'KES'} {data.user.total_earned || 0}
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', color: 'success.main' }}>
             <MenuUp sx={{ 
