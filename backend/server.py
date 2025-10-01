@@ -656,7 +656,7 @@ async def register(user_data: UserRegister):
         "binary_earnings": "0.00",
         "wallet_balance": "0.00",
         "is_activated": False,
-        "activation_amount": "500.00",
+        "activation_amount": "10.00",
         "total_earned": "0.00",
         "total_withdrawn": "0.00",
         "referral_earnings": "0.00",
