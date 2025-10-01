@@ -74,6 +74,12 @@ const FooterContent = () => {
           >
             Support
           </Link>
+          <Link
+            href='/app-release.apk'
+            download
+          >
+            Install App
+          </Link>
         </Box>
       )}
     </Box>
