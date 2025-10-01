@@ -148,9 +148,10 @@ const TeamTree = () => {
           />
         </Box>
 
-        {member.children && member.children.length > 0 && (
+        {(member.left_child || member.right_child) && (
           <Box sx={{ ml: 4, pl: 2, borderLeft: '2px solid', borderColor: 'divider' }}>
-            {member.children.map(child => renderTeamMember(child, level + 1))}
+            {member.left_child && renderTeamMember(member.left_child, level + 1)}
+            {member.right_child && renderTeamMember(member.right_child, level + 1)}
           </Box>
         )}
       </Box>
@@ -293,9 +294,9 @@ const TeamTree = () => {
     )
   }
 
-  const totalMembers = teamData?.total_members || 0
-  const progressToReward = Math.min((totalMembers / 100) * 100, 100)
-  const canClaimReward = totalMembers >= 100
+  const totalMembers = teamData?.total_team_size || 0
+  const progressToReward = teamData?.progress_percentage || 0
+  const canClaimReward = teamData?.eligible_for_reward && !teamData?.reward_claimed
 
   return (
     <Card sx={{
@@ -420,7 +421,7 @@ const TeamTree = () => {
               <Grid item xs={6} sm={3}>
                 <Box sx={{ textAlign: 'center' }}>
                   <Typography variant="h4" color="primary">
-                    {teamData.left_leg_count || 0}
+                    {teamData.tree?.left_leg_size || 0}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
                     Left Leg
@@ -430,7 +431,7 @@ const TeamTree = () => {
               <Grid item xs={6} sm={3}>
                 <Box sx={{ textAlign: 'center' }}>
                   <Typography variant="h4" color="secondary">
-                    {teamData.right_leg_count || 0}
+                    {teamData.tree?.right_leg_size || 0}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
                     Right Leg
@@ -440,20 +441,20 @@ const TeamTree = () => {
               <Grid item xs={6} sm={3}>
                 <Box sx={{ textAlign: 'center' }}>
                   <Typography variant="h4" color="success.main">
-                    {teamData.active_members || 0}
+                    {totalMembers}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Active
+                    Total Members
                   </Typography>
                 </Box>
               </Grid>
               <Grid item xs={6} sm={3}>
                 <Box sx={{ textAlign: 'center' }}>
                   <Typography variant="h4" color="warning.main">
-                    {teamData.inactive_members || 0}
+                    {teamData.reward_amount || 50}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Inactive
+                    Reward Amount ({teamData.currency || 'KES'})
                   </Typography>
                 </Box>
               </Grid>

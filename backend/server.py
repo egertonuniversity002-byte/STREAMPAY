@@ -283,7 +283,7 @@ async def trigger_binary_commissions(user_id: str, session=None, db_instance=Non
         db_instance = db
     
     user = await db_instance.users.find_one({"user_id": user_id}, session=session)
-    if not user or user.get("is_activated", False):
+    if not user:
         return
     
     # Commission structure: level 1 (sponsor): 50, 2:30, 3:20, 4:10, 5:5 KES
@@ -294,8 +294,14 @@ async def trigger_binary_commissions(user_id: str, session=None, db_instance=Non
     while current and current.get("parent_id") and level <= 5:
         parent_id = current["parent_id"]
         parent = await db_instance.users.find_one({"user_id": parent_id}, session=session)
-        if not parent or not parent.get("is_activated", False):
+        if not parent:
             break
+        if not parent.get("is_activated", False):
+            # Log skipped commission due to inactive upline
+            logging.info(f"Skipped binary commission for inactive upline {parent_id} at level {level}")
+            current = parent
+            level += 1
+            continue
         
         if level - 1 < len(commissions):
             comm = commissions[level - 1]

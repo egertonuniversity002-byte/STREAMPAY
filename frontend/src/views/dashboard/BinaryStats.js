@@ -219,7 +219,7 @@ const BinaryStats = () => {
             <AccountBalance sx={{ fontSize: 48, color: 'success.main' }} />
           </Box>
           <Typography variant="h4" fontWeight="bold" gutterBottom>
-            {binary.total_binary_earnings} {binary.currency}
+            {binary.binary_earnings ? binary.binary_earnings.toFixed(2) : '0.00'}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             Total Binary Earnings
@@ -230,24 +230,10 @@ const BinaryStats = () => {
       <Grid item xs={12} md={6} lg={3}>
         <StatsCard>
           <Box mb={2}>
-            <TrendingUp sx={{ fontSize: 48, color: 'warning.main' }} />
-          </Box>
-          <Typography variant="h4" fontWeight="bold" gutterBottom>
-            {binary.monthly_binary_earnings} {binary.currency}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Monthly Earnings
-          </Typography>
-        </StatsCard>
-      </Grid>
-
-      <Grid item xs={12} md={6} lg={3}>
-        <StatsCard>
-          <Box mb={2}>
             <Balance sx={{ fontSize: 48, color: 'info.main' }} />
           </Box>
           <Typography variant="h4" fontWeight="bold" gutterBottom>
-            {binary.leg_balance} {binary.currency}
+            {binary.leg_balance}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             Leg Balance
@@ -366,208 +352,6 @@ const BinaryStats = () => {
               <Typography variant="body2" color="text.secondary">
                 Balance your legs for optimal binary earnings
               </Typography>
-            </Box>
-          </CardContent>
-        </Card>
-      </Grid>
-
-      {/* Binary Details */}
-      <Grid item xs={12} md={6}>
-        <Card sx={{
-          background: theme => theme.palette.mode === 'dark'
-            ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
-            : 'linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 50%, #fff3e0 100%)',
-          borderRadius: '16px',
-          boxShadow: theme => theme.palette.mode === 'dark'
-            ? '0 15px 35px rgba(0, 123, 255, 0.3), 0 0 15px rgba(255, 215, 0, 0.1)'
-            : '0 15px 35px rgba(0, 123, 255, 0.2), 0 0 15px rgba(255, 215, 0, 0.1)',
-          border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,215,0,0.3)' : '1px solid rgba(0,123,255,0.2)',
-          transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-          animation: 'fadeInUp 0.6s ease-out',
-          position: 'relative',
-          overflow: 'hidden',
-          '&::before': {
-            content: '""',
-            position: 'absolute',
-            top: 0,
-            left: '-100%',
-            width: '100%',
-            height: '100%',
-            background: 'linear-gradient(90deg, transparent, rgba(255,215,0,0.3), transparent)',
-            transition: 'left 0.5s',
-          },
-          '&:hover': {
-            transform: 'translateY(-6px) scale(1.02)',
-            boxShadow: theme => theme.palette.mode === 'dark'
-              ? '0 25px 50px rgba(0, 123, 255, 0.4), 0 0 25px rgba(255, 215, 0, 0.2)'
-              : '0 25px 50px rgba(0, 123, 255, 0.3), 0 0 25px rgba(255, 215, 0, 0.15)',
-            '&::before': {
-              left: '100%',
-            }
-          },
-          '@keyframes fadeInUp': {
-            '0%': {
-              opacity: 0,
-              transform: 'translateY(20px)',
-            },
-            '100%': {
-              opacity: 1,
-              transform: 'translateY(0)',
-            },
-          },
-        }}>
-          <CardContent>
-            <Typography variant="h6" gutterBottom>
-              Binary Performance
-            </Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-              <Box display="flex" justifyContent="space-between">
-                <Typography variant="body2" color="text.secondary">
-                  Weekly New Members:
-                </Typography>
-                <Typography variant="body2" fontWeight="medium">
-                  {binary.weekly_new_members}
-                </Typography>
-              </Box>
-
-              <Box display="flex" justifyContent="space-between">
-                <Typography variant="body2" color="text.secondary">
-                  Monthly New Members:
-                </Typography>
-                <Typography variant="body2" fontWeight="medium">
-                  {binary.monthly_new_members}
-                </Typography>
-              </Box>
-
-              <Divider />
-
-              <Box display="flex" justifyContent="space-between">
-                <Typography variant="body2" color="text.secondary">
-                  Binary Cycle Rate:
-                </Typography>
-                <Typography variant="body2" fontWeight="medium">
-                  {binary.cycle_rate}%
-                </Typography>
-              </Box>
-
-              <Box display="flex" justifyContent="space-between">
-                <Typography variant="body2" color="text.secondary">
-                  Matching Bonus:
-                </Typography>
-                <Typography variant="body2" fontWeight="medium">
-                  {binary.matching_bonus}%
-                </Typography>
-              </Box>
-
-              <Box display="flex" justifyContent="space-between">
-                <Typography variant="body2" color="text.secondary">
-                  Rank:
-                </Typography>
-                <Typography variant="body2" fontWeight="medium">
-                  {binary.rank}
-                </Typography>
-              </Box>
-            </Box>
-          </CardContent>
-        </Card>
-      </Grid>
-
-      {/* Earnings Breakdown */}
-      <Grid item xs={12} md={6}>
-        <Card sx={{
-          background: theme => theme.palette.mode === 'dark'
-            ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
-            : 'linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 50%, #fff3e0 100%)',
-          borderRadius: '16px',
-          boxShadow: theme => theme.palette.mode === 'dark'
-            ? '0 15px 35px rgba(0, 123, 255, 0.3), 0 0 15px rgba(255, 215, 0, 0.1)'
-            : '0 15px 35px rgba(0, 123, 255, 0.2), 0 0 15px rgba(255, 215, 0, 0.1)',
-          border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,215,0,0.3)' : '1px solid rgba(0,123,255,0.2)',
-          transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-          animation: 'fadeInUp 0.6s ease-out',
-          position: 'relative',
-          overflow: 'hidden',
-          '&::before': {
-            content: '""',
-            position: 'absolute',
-            top: 0,
-            left: '-100%',
-            width: '100%',
-            height: '100%',
-            background: 'linear-gradient(90deg, transparent, rgba(255,215,0,0.3), transparent)',
-            transition: 'left 0.5s',
-          },
-          '&:hover': {
-            transform: 'translateY(-6px) scale(1.02)',
-            boxShadow: theme => theme.palette.mode === 'dark'
-              ? '0 25px 50px rgba(0, 123, 255, 0.4), 0 0 25px rgba(255, 215, 0, 0.2)'
-              : '0 25px 50px rgba(0, 123, 255, 0.3), 0 0 25px rgba(255, 215, 0, 0.15)',
-            '&::before': {
-              left: '100%',
-            }
-          },
-          '@keyframes fadeInUp': {
-            '0%': {
-              opacity: 0,
-              transform: 'translateY(20px)',
-            },
-            '100%': {
-              opacity: 1,
-              transform: 'translateY(0)',
-            },
-          },
-        }}>
-          <CardContent>
-            <Typography variant="h6" gutterBottom>
-              Earnings Breakdown
-            </Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-              <Box display="flex" justifyContent="space-between">
-                <Typography variant="body2" color="text.secondary">
-                  Direct Commissions:
-                </Typography>
-                <Typography variant="body2" fontWeight="medium">
-                  {binary.direct_commissions} {binary.currency}
-                </Typography>
-              </Box>
-
-              <Box display="flex" justifyContent="space-between">
-                <Typography variant="body2" color="text.secondary">
-                  Binary Commissions:
-                </Typography>
-                <Typography variant="body2" fontWeight="medium">
-                  {binary.binary_commissions} {binary.currency}
-                </Typography>
-              </Box>
-
-              <Box display="flex" justifyContent="space-between">
-                <Typography variant="body2" color="text.secondary">
-                  Matching Bonuses:
-                </Typography>
-                <Typography variant="body2" fontWeight="medium">
-                  {binary.matching_bonuses} {binary.currency}
-                </Typography>
-              </Box>
-
-              <Divider />
-
-              <Box display="flex" justifyContent="space-between">
-                <Typography variant="body2" color="text.secondary">
-                  Total This Month:
-                </Typography>
-                <Typography variant="body2" fontWeight="bold" color="success.main">
-                  {binary.monthly_binary_earnings} {binary.currency}
-                </Typography>
-              </Box>
-
-              <Box display="flex" justifyContent="space-between">
-                <Typography variant="body2" color="text.secondary">
-                  Total All Time:
-                </Typography>
-                <Typography variant="body2" fontWeight="bold" color="primary.main">
-                  {binary.total_binary_earnings} {binary.currency}
-                </Typography>
-              </Box>
             </Box>
           </CardContent>
         </Card>
