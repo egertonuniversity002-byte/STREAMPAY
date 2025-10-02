@@ -30,6 +30,7 @@ import SalesByCountries from 'src/views/dashboard/SalesByCountries'
 
 // ** Component Imports
 import ProtectedRoute from 'src/components/ProtectedRoute'
+import ApkDownloadModal from 'src/components/ApkDownloadModal'
 
 // ** Context Imports
 import { useAuth } from 'src/contexts/AuthContext'
@@ -38,6 +39,7 @@ const Dashboard = () => {
   const [dashboardData, setDashboardData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [showApkModal, setShowApkModal] = useState(false)
 
   // ** Auth Context
   const { token, isAuthenticated } = useAuth()
@@ -74,6 +76,18 @@ const Dashboard = () => {
 
     fetchDashboardData()
   }, [token, isAuthenticated])
+
+  // Show APK download modal on first visit
+  useEffect(() => {
+    const apkInstalled = localStorage.getItem('streampay_apk_installed')
+    if (!apkInstalled && dashboardData) {
+      // Show modal after a short delay to let the dashboard load
+      const timer = setTimeout(() => {
+        setShowApkModal(true)
+      }, 2000)
+      return () => clearTimeout(timer)
+    }
+  }, [dashboardData])
 
   if (loading) {
     return (
@@ -522,6 +536,16 @@ const Dashboard = () => {
           </Grid>
         </Grid>
       </ApexChartWrapper>
+
+      {/* APK Download Modal */}
+      <ApkDownloadModal
+        open={showApkModal}
+        onClose={() => setShowApkModal(false)}
+        onDownload={() => {
+          localStorage.setItem('streampay_apk_installed', 'true')
+          setShowApkModal(false)
+        }}
+      />
     </ProtectedRoute>
   )
 }

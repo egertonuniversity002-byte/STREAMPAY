@@ -699,7 +699,7 @@ async def register(user_data: UserRegister):
         "left_child_id": None,
         "right_child_id": None,
         "team_earnings": "0.00",
-        "activation_expense": "500.00",
+        "activation_expense": "300.00",
         "activation_reward": "0.00",
         "team_reward_claimed": False
     }
@@ -774,7 +774,7 @@ async def register(user_data: UserRegister):
         welcome_email_body = f"""
         <h1>Welcome to EarnPlatform, {user_doc['full_name']}!</h1>
         <p>Thank you for registering. Your account has been created successfully.</p>
-        <p>Please deposit KSH 500 to activate your account and unlock all features. You'll also receive a 30 KES reward!</p>
+        <p>Please deposit KSH 300 to activate your account and unlock all features. You'll also receive a 300 KES reward!</p>
         """
         await send_email(
             subject="Welcome to EarnPlatform!",
@@ -800,7 +800,7 @@ async def register(user_data: UserRegister):
     # Return response with sanitized user data
     return {
         "success": True,
-        "message": "Registration successful! A welcome email has been sent. Please deposit KSH 500 to activate your account.",
+        "message": "Registration successful! A welcome email has been sent. Please deposit KSH 300 to activate your account.",
         "token": token,
         "user": json_serializable_doc({
             "user_id": user_id,
@@ -978,7 +978,7 @@ async def get_current_user_info(current_user: dict = Depends(get_current_user)):
             "referral_code": current_user['referral_code'],
             "is_activated": current_user['is_activated'],
             "wallet_balance": current_user['wallet_balance'],
-            "activation_amount": current_user.get('activation_amount', 500.0),
+            "activation_amount": current_user.get('activation_amount', 300.0),
             "total_earned": current_user.get('total_earned', 0.0),
             "total_withdrawn": current_user.get('total_withdrawn', 0.0),
             "referral_earnings": current_user.get('referral_earnings', 0.0),
@@ -1215,7 +1215,7 @@ async def get_dashboard_stats(current_user: dict = Depends(get_current_user)):
                 "full_name": current_user['full_name'],
                 "wallet_balance": convert_amount(current_user['wallet_balance']),
                 "is_activated": current_user['is_activated'],
-                "activation_amount": convert_amount(current_user.get('activation_amount', 500.0)),
+                "activation_amount": convert_amount(current_user.get('activation_amount', 300.0)),
                 "activation_expense": convert_amount(current_user.get('activation_expense', 0.0)),
                 "activation_reward": convert_amount(current_user.get('activation_reward', 0.0)),
                 "net_activation": convert_amount(current_user.get('activation_reward', 0.0) - current_user.get('activation_expense', 0.0)),
@@ -2720,10 +2720,10 @@ async def request_withdrawal(
                 raise HTTPException(500, "Conversion rate unavailable")
 
     # --- Validate minimum & balance ---
-    if kes_amount < 100.0:
+    if kes_amount < 1000.0:
         raise HTTPException(
             status_code=400,
-            detail=f"Minimum withdrawal amount is 100 KES equivalent ({kes_amount:.2f} KES)"
+            detail=f"Minimum withdrawal amount is 1000 KES equivalent ({kes_amount:.2f} KES)"
         )
 
     if kes_amount > float(current_user.get("wallet_balance", 0.0)):
