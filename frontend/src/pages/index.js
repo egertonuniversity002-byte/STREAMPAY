@@ -35,6 +35,21 @@ import ApkDownloadModal from 'src/components/ApkDownloadModal'
 // ** Context Imports
 import { useAuth } from 'src/contexts/AuthContext'
 
+// ** Utility Functions
+const isMobileDevice = () => {
+  if (typeof window === 'undefined') return false
+
+  // Check for mobile user agents
+  const userAgent = navigator.userAgent || navigator.vendor || window.opera
+  const mobileRegex = /android|avantgo|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i
+
+  // Also check for touch capability and screen size
+  const hasTouchScreen = 'ontouchstart' in window || navigator.maxTouchPoints > 0
+  const isSmallScreen = window.innerWidth <= 768
+
+  return mobileRegex.test(userAgent.toLowerCase()) || (hasTouchScreen && isSmallScreen)
+}
+
 const Dashboard = () => {
   const [dashboardData, setDashboardData] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -77,10 +92,10 @@ const Dashboard = () => {
     fetchDashboardData()
   }, [token, isAuthenticated])
 
-  // Show APK download modal on first visit
+  // Show APK download modal on first visit - only for mobile devices
   useEffect(() => {
     const apkInstalled = localStorage.getItem('streampay_apk_installed')
-    if (!apkInstalled && dashboardData) {
+    if (!apkInstalled && dashboardData && isMobileDevice()) {
       // Show modal after a short delay to let the dashboard load
       const timer = setTimeout(() => {
         setShowApkModal(true)
