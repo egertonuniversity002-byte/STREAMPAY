@@ -21,7 +21,7 @@ const gatewayData = [
     id: 'paypal',
     name: 'PayPal',
     description: 'Global payment platform',
-    logo: '/images/logos/paypal.png',
+    logo: '/images/misc/paypal.png',
     color: '#0070BA',
     gradient: 'linear-gradient(135deg, #0070BA 0%, #00A3E0 100%)',
     glowColor: 'rgba(0, 112, 186, 0.3)',
