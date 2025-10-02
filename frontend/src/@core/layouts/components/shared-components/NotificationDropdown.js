@@ -144,9 +144,10 @@ const MenuItemTitle = styled(Typography)(({ theme }) => ({
 // ** Styled component for the subtitle in MenuItems
 const MenuItemSubtitle = styled(Typography)({
   flex: '1 1 100%',
-  overflow: 'hidden',
-  whiteSpace: 'nowrap',
-  textOverflow: 'ellipsis'
+  overflow: 'visible',
+  whiteSpace: 'normal',
+  wordWrap: 'break-word',
+  lineHeight: 1.4
 })
 
 const NotificationDropdown = () => {
