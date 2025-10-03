@@ -29,7 +29,7 @@ import { useAuth } from 'src/contexts/AuthContext'
 
 const PayPalDeposit = ({ user, onBack }) => {
   // ** State
-  const [amount, setAmount] = useState('500')
+  const [amount, setAmount] = useState('50')
   const [email, setEmail] = useState(user?.email || '')
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
