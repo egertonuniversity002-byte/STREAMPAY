@@ -219,14 +219,14 @@ const NotificationDropdown = () => {
   }
 
   // Mark notification as read
-  const markAsRead = async (notificationId) => {
+  const markAsRead = async (notification_Id) => {
     try {
       if (!isAuthenticated() || !token) {
         console.error('Authentication required to mark notification as read')
         return
       }
 
-      const response = await fetch(`https://official-paypal.onrender.com/api/notifications/${notificationId}/read`, {
+      const response = await fetch(`https://official-paypal.onrender.com/api/notifications/${notification_Id}/read`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -236,7 +236,7 @@ const NotificationDropdown = () => {
 
       if (response.ok) {
         setNotifications(prev =>
-          prev.map(n => n.notification_id === notificationId ? { ...n, is_read: true } : n)
+          prev.map(n => n.notification_id === notification_Id ? { ...n, is_read: true } : n)
         )
         setUnreadCount(prev => Math.max(0, prev - 1))
       } else {
