@@ -37,7 +37,7 @@ const PesapalDeposit = ({ user, onBack }) => {
   const maxDeposit = 150000 // KES 150,000 maximum
 
   // ** State
-  const [amount, setAmount] = useState('50')
+  const [amount, setAmount] = useState('100')
   const [currency, setCurrency] = useState('KES')
   const [phone, setPhone] = useState(user?.phone || '')
   const [firstName, setFirstName] = useState(user?.first_name || '')
