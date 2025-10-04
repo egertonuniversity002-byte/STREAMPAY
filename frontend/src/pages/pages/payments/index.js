@@ -176,7 +176,7 @@ const PaymentsPage = () => {
             Account Activation Required
           </Typography>
           <Typography variant='body1' sx={{ mb: 4, color: 'text.secondary' }}>
-            To access all payment features, you need to activate your account by making a deposit of at least 50 KSH.
+            To access all payment features, you need to activate your account by making a payment of at least 100 KSH.
           </Typography>
           <GatewaySelection onGatewaySelect={handleGatewaySelect} user={user} />
         </CardContent>
