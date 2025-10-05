@@ -148,7 +148,9 @@ const LoginPage = () => {
     setError(null)
 
     try {
-      const result = await login(values.email, values.password, values.rememberMe)
+      const trimmedEmail = values.email.trim()
+      const trimmedPassword = values.password.trim()
+      const result = await login(trimmedEmail, trimmedPassword, values.rememberMe)
 
       if (result.success) {
         // Show success message from server or default message

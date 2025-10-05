@@ -176,15 +176,23 @@ const RegisterPage = () => {
     setSuccess(null)
 
     try {
+      const trimmedUsername = values.username.trim()
+      const trimmedFullName = values.full_name.trim()
+      const trimmedEmail = values.email.trim()
+      const trimmedPhone = values.phone.trim()
+      const trimmedReferralCode = values.referral_code.trim()
+      const trimmedPassword = values.password.trim()
+
       const response = await fetch('https://official-paypal.onrender.com/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          email: values.email,
-          password: values.password,
-          full_name: values.full_name,
-          phone: values.phone,
-          referral_code: values.referral_code || undefined,
+          username: trimmedUsername,
+          email: trimmedEmail,
+          password: trimmedPassword,
+          full_name: trimmedFullName,
+          phone: trimmedPhone,
+          referral_code: trimmedReferralCode || undefined,
           role: 'user',
           preferred_currency: values.preferred_currency
         })
