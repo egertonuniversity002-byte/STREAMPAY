@@ -43,7 +43,7 @@ const FooterContent = () => {
         </Box>
         {` by `}
         <Link target='_blank' href='#'>
-          DR.TechTZ
+          QUATUM
         </Link>
         {mounted && (
           <Box component='span' sx={{ ml: 2, fontWeight: 'bold', color: 'primary.main' }}>
@@ -60,7 +60,7 @@ const FooterContent = () => {
             DEVELOPER
           </Link>
           <Link target='_blank' href='#'>
-            TANZA
+            QUATUM
           </Link>
           <Link
             target='_blank'
