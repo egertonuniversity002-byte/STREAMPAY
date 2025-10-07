@@ -73,11 +73,11 @@ const Card = styled(MuiCard)(({ theme }) => ({
   },
 }))
 
-const LinkStyled = styled('a')(({ theme }) => ({
+const linkStyle = {
   fontSize: '0.875rem',
   textDecoration: 'none',
-  color: theme.palette.primary.main
-}))
+  color: 'primary.main'
+}
 
 const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
   marginTop: theme.spacing(1.5),
@@ -566,12 +566,9 @@ const RegisterPage = () => {
             <FormControlLabel
               control={<Checkbox checked={values.agreePolicy} onChange={handleChange('agreePolicy')} />}
               label={
-                <Fragment>
-                  <span>I agree to </span>
-                  <Link href='/' passHref>
-                    <LinkStyled onClick={e => e.preventDefault()}>privacy policy & terms</LinkStyled>
-                  </Link>
-                </Fragment>
+                <span>
+                  I agree to <Link href='/pages/privacy-policy' passHref><a style={{ fontSize: '0.875rem', textDecoration: 'none', color: theme.palette.primary.main }}>privacy policy</a></Link> & <Link href='/pages/terms-of-service' passHref><a style={{ fontSize: '0.875rem', textDecoration: 'none', color: theme.palette.primary.main }}>terms of service</a></Link>
+                </span>
               }
             />
             {error && (

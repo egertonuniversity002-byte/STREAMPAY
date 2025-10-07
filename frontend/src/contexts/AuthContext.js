@@ -224,6 +224,77 @@ export const AuthProvider = ({ children }) => {
     router.push('/pages/login')
   }
 
+  // Request password reset function
+  const requestPasswordReset = async (email) => {
+    try {
+      const response = await fetch('https://official-paypal.onrender.com/api/auth/request-password-reset', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+        signal: AbortSignal.timeout(15000) // 15 second timeout
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        const errorMessage = data.detail || data.message || 'Request failed'
+        throw new Error(errorMessage)
+      }
+
+      return { success: true, message: data.message }
+    } catch (error) {
+      const errorMessage = error.message || 'Network error occurred'
+      throw new Error(errorMessage)
+    }
+  }
+
+  // Verify reset token function
+  const verifyResetToken = async (token) => {
+    try {
+      const response = await fetch(`https://official-paypal.onrender.com/api/auth/verify-reset-token?token=${encodeURIComponent(token)}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        signal: AbortSignal.timeout(15000) // 15 second timeout
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        const errorMessage = data.detail || data.message || 'Token verification failed'
+        throw new Error(errorMessage)
+      }
+
+      return { success: true, valid: data.valid, expires_at: data.expires_at, message: data.message }
+    } catch (error) {
+      const errorMessage = error.message || 'Network error occurred'
+      throw new Error(errorMessage)
+    }
+  }
+
+  // Reset password function
+  const resetPassword = async (token, newPassword) => {
+    try {
+      const response = await fetch('https://official-paypal.onrender.com/api/auth/reset-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token, new_password: newPassword }),
+        signal: AbortSignal.timeout(15000) // 15 second timeout
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        const errorMessage = data.detail || data.message || 'Password reset failed'
+        throw new Error(errorMessage)
+      }
+
+      return { success: true, message: data.message, next_step: data.next_step }
+    } catch (error) {
+      const errorMessage = error.message || 'Network error occurred'
+      throw new Error(errorMessage)
+    }
+  }
+
   // Check if user is authenticated
   const isAuthenticated = () => {
     return !!token && !!user
@@ -345,6 +416,9 @@ export const AuthProvider = ({ children }) => {
     authError,
     login,
     logout,
+    requestPasswordReset,
+    verifyResetToken,
+    resetPassword,
     isAuthenticated,
     isActivated,
     getUserRole,

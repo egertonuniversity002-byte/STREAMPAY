@@ -78,8 +78,7 @@ const ApkDownloadModal = ({ open, onClose }) => {
     <Dialog
       open={open}
       onClose={handleClose}
-      maxWidth="sm"
-      fullWidth
+      maxWidth="xs"
       sx={{
         '& .MuiDialog-paper': {
           borderRadius: '20px',

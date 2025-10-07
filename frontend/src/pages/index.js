@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Skeleton from '@mui/material/Skeleton'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
+import Button from '@mui/material/Button'
 
 // ** Icons Imports
 import Poll from 'mdi-material-ui/Poll'
@@ -27,6 +28,7 @@ import StatisticsCard from 'src/views/dashboard/StatisticsCard'
 import WeeklyOverview from 'src/views/dashboard/WeeklyOverview'
 import DepositWithdraw from 'src/views/dashboard/DepositWithdraw'
 import SalesByCountries from 'src/views/dashboard/SalesByCountries'
+
 
 // ** Component Imports
 import ProtectedRoute from 'src/components/ProtectedRoute'
@@ -548,6 +550,12 @@ const Dashboard = () => {
           </Grid>
           <Grid item xs={12}>
             <Table />
+          </Grid>
+          {/* Temporary button to test modal */}
+          <Grid item xs={12}>
+            <Button variant="contained" onClick={() => setShowApkModal(true)}>
+              INSTALL APP
+            </Button>
           </Grid>
         </Grid>
       </ApexChartWrapper>
